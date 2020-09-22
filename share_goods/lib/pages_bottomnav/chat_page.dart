@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_goods/itemField.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _ChatState extends State<Chat> {
         title: Text('Chat'),
         centerTitle: true,
       ),
+      body: ItemField(),
     );
   }
 }
