@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
 
-class ItemField extends StatelessWidget {
+class ItemField extends StatefulWidget {
+  String displayText;
+
+  ItemField({this.displayText});
+
+  @override
+  _ItemFieldState createState() => _ItemFieldState();
+}
+
+class _ItemFieldState extends State<ItemField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             flex: 5,
             child: Container(
-              // skal ikke være en knap
-              child: FlatButton(
-                color: myLightGreen,
-                onPressed: () {},
+              color: myLightGreen,
+              child: Center(
+                heightFactor: 1.5,
                 child: Text(
-                  'Løg',
+                  widget.displayText,
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -38,13 +46,39 @@ class ItemField extends StatelessWidget {
                 child: Text(
                   'Mangler',
                   style: TextStyle(
-                    backgroundColor: Colors.white,
                     color: Colors.red,
                   ),
                 ),
               ),
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class ItemTitle extends StatelessWidget {
+  final String title;
+
+  ItemTitle({this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10,),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 24,
+              color: myDartGreen,
+            ),
+          ),
+          Divider(color: myDartGreen,),
         ],
       ),
     );

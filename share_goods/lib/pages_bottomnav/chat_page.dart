@@ -14,7 +14,6 @@ class _ChatState extends State<Chat> {
         title: Text('Chat'),
         centerTitle: true,
       ),
-      body: ItemField(),
     );
   }
 }
