@@ -10,7 +10,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0; // current index for bottomnavigation
+  // current index for bottomnavigation
+  int _currentIndex = 1; 
 
   // Pages we move between via bottomnav
   final pages = [Chat(), Items(), Profile()];
@@ -21,11 +22,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: myLightGreen,
-        selectedItemColor: myDartGreen,
+        selectedItemColor: myDarkGreen,
         unselectedItemColor: Colors.white,
         selectedFontSize: 12,
         unselectedFontSize: 12,
-        selectedIconTheme: IconThemeData(color: myDartGreen),
+        selectedIconTheme: IconThemeData(color: myDarkGreen),
         unselectedIconTheme: IconThemeData(color: Colors.white),
         currentIndex: _currentIndex,
         items: bottomNavItems,

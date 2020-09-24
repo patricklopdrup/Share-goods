@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
-import 'myColors.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 
 class ItemsNeeded extends StatefulWidget {
@@ -118,11 +117,11 @@ class ItemTitle extends StatelessWidget {
             title,
             style: TextStyle(
               fontSize: 24,
-              color: myDartGreen,
+              color: myDarkGreen,
             ),
           ),
           Divider(
-            color: myDartGreen,
+            color: myDarkGreen,
             thickness: 1.5,
           ),
         ],

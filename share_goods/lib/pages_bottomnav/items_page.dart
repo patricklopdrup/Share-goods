@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/itemField.dart';
-import 'package:share_goods/myColors.dart';
 import 'package:share_goods/MyActionButton.dart';
-
-import '../itemField.dart';
-import '../itemField.dart';
+import 'package:share_goods/myColors.dart';
 
 class Items extends StatefulWidget {
   @override
@@ -16,17 +13,7 @@ List<String> inventory = [
   'Køkkenrulle',
   'Opvasketabs',
   'Alufolie',
-  'Bagepapir',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10'
+  'Bagepapir'
 ];
 
 List<String> need = ['hej', 'med', 'dig'];
@@ -64,10 +51,18 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  // Function to move from need list to inventory list
   Function needFunc = (index) {
     String tempName = need[index];
     need.removeAt(index);
     inventory.add(tempName);
+  };
+
+  // Function to move from inventory list to need list
+  Function inventoryFunc = (index) {
+    String tempName = inventory[index];
+    inventory.removeAt(index);
+    need.add(tempName);
   };
 
   @override
@@ -84,19 +79,49 @@ class _ItemListState extends State<ItemList> {
             );
             // Show list of needed items
           } else if (index < need.length + 1) {
-            return ItemsNeeded(
-              displayText: need[index - 1],
-              isNeeded: false,
-              index: index - 1,
-              moveFunc: () {
+            int indexInList = index - 1;
+            return Dismissible(
+              resizeDuration: Duration(milliseconds: 150),
+              key: UniqueKey(),
+              onDismissed: (direction) {
                 setState(() {
-                  int indexInList = index - 1;
-                  print('i liste $indexInList');
-                  String tempName = need[indexInList];
-                  need.removeAt(indexInList);
-                  inventory.add(tempName);
+                  needFunc(indexInList);
                 });
               },
+              background: Container(
+                margin: EdgeInsets.fromLTRB(0, 12, 0, 7),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add_shopping_cart,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 20),
+                      Text(
+                        'Købt',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                color: myDarkGreen,
+                alignment: Alignment.centerLeft,
+              ),
+              child: ItemsNeeded(
+                displayText: need[index - 1],
+                isNeeded: false,
+                index: index - 1,
+                moveFunc: () {
+                  setState(() {
+                    needFunc(indexInList);
+                  });
+                },
+              ),
             );
             // Show title of inventory after needed items
           } else if (index == need.length + 1) {
@@ -112,10 +137,7 @@ class _ItemListState extends State<ItemList> {
               moveFunc: () {
                 setState(() {
                   int indexInList = index - need.length - 2;
-                  print('i liste $indexInList');
-                  String tempName = inventory[indexInList];
-                  inventory.removeAt(indexInList);
-                  need.add(tempName);
+                  inventoryFunc(indexInList);
                 });
               },
             );
