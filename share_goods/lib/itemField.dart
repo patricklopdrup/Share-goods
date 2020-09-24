@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
+import 'myColors.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 
-class ItemField extends StatefulWidget {
-  String displayText;
+class ItemsNeeded extends StatefulWidget {
+  final String displayText;
+  final bool isNeeded;
+  final int index;
+  final Function moveFunc;
 
-  ItemField({this.displayText});
+  ItemsNeeded({this.displayText, this.isNeeded, this.index, this.moveFunc});
 
   @override
-  _ItemFieldState createState() => _ItemFieldState();
+  _ItemsNeededState createState() => _ItemsNeededState();
 }
 
-class _ItemFieldState extends State<ItemField> {
+class _ItemsNeededState extends State<ItemsNeeded> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,27 +42,63 @@ class _ItemFieldState extends State<ItemField> {
           SizedBox(
             width: 10,
           ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: OutlineButton(
-                borderSide: BorderSide(color: Colors.red),
-                onPressed: () {},
-                child: Text(
-                  'Mangler',
-                  style: TextStyle(
-                    color: Colors.red,
+          Conditional.single(
+            context: context,
+            conditionBuilder: (context) => widget.isNeeded,
+            widgetBuilder: (context) {
+              return Expanded(
+                flex: 2,
+                child: Container(
+                  child: OutlineButton(
+                    borderSide: BorderSide(color: Colors.red),
+                    onPressed: widget.moveFunc,
+                    child: Text(
+                      'Mangler',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
+            fallbackBuilder: (context) {
+              return Expanded(
+                flex: 2,
+                child: Container(
+                  child: OutlineButton(
+                    borderSide: BorderSide(color: myLightGreen),
+                    onPressed: widget.moveFunc,
+                    child: Text(
+                      'Køb',
+                      style: TextStyle(
+                        color: myLightGreen,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           )
+
+          //ItemButtonNeeded(moveFunc: widget.moveFunc,)
+          // Conditional.single(
+          //   context: context,
+          //   conditionBuilder: (context) => widget.isNeeded,
+          //   widgetBuilder: (context) => ItemButtonNeeded(
+          //     moveFunc: widget.moveFunc,
+          //   ),
+          //   fallbackBuilder: (context) => ItemButtonInventory(
+          //     moveFunc: widget.moveFunc,
+          //   ),
+          // ),
         ],
       ),
     );
   }
 }
 
+// Titles that break the list
 class ItemTitle extends StatelessWidget {
   final String title;
 
@@ -70,7 +111,9 @@ class ItemTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Text(
             title,
             style: TextStyle(
@@ -78,7 +121,10 @@ class ItemTitle extends StatelessWidget {
               color: myDartGreen,
             ),
           ),
-          Divider(color: myDartGreen,),
+          Divider(
+            color: myDartGreen,
+            thickness: 1.5,
+          ),
         ],
       ),
     );

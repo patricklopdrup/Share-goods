@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share_goods/pages_bottomnav/chat_page.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
 import 'package:share_goods/pages_bottomnav/profile_page.dart';
+import 'package:share_goods/myColors.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -10,8 +11,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0; // current index for bottomnavigation
-  Color myLightGreen = Color(0xFF76DEBB);
-  Color myDartGreen = Color(0xFF26473D);
 
   // Pages we move between via bottomnav
   final pages = [Chat(), Items(), Profile()];
