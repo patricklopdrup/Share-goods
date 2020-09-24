@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:share_goods/itemField.dart';
+import 'package:share_goods/myAppBar.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -10,10 +10,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat'),
-        centerTitle: true,
-      ),
+      appBar: MyAppBar(title: 'Chat',),
     );
   }
 }

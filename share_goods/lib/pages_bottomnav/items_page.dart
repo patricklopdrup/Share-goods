@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/itemField.dart';
 import 'package:share_goods/MyActionButton.dart';
+import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
 
-class Items extends StatefulWidget {
+class Item extends StatefulWidget {
   @override
-  _ItemsState createState() => _ItemsState();
+  _ItemState createState() => _ItemState();
 }
+
+List<String> need = ['Opvaskemiddel', 'Karry', 'Salt', 'Peber'];
 
 List<String> inventory = [
   'Løg',
   'Køkkenrulle',
   'Opvasketabs',
   'Alufolie',
-  'Bagepapir'
+  'Bagepapir',
+  'Skuresvampe',
+  'Sæbe',
+  'Paprika',
+  'Rødløg'
 ];
 
-List<String> need = ['hej', 'med', 'dig'];
 
-Function moveFromInventory(invIndex, needIndex) {
-  String tempNeed = inventory[invIndex];
-  inventory.remove(invIndex);
-  need.add(tempNeed);
-}
-
-class _ItemsState extends State<Items> {
+class _ItemState extends State<Item> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Varer'),
-        centerTitle: true,
+      appBar: MyAppBar(
+        title: 'Varer',
+      ),
+
       ),
       // Display list in body
       body: ItemList(),
@@ -130,13 +131,13 @@ class _ItemListState extends State<ItemList> {
             );
             // Show all inventory items
           } else {
+            int indexInList = index - need.length - 2;
             return ItemsNeeded(
-              displayText: inventory[index - need.length - 2],
+              displayText: inventory[indexInList],
               isNeeded: true,
-              index: index - need.length - 2,
+              index: indexInList,
               moveFunc: () {
                 setState(() {
-                  int indexInList = index - need.length - 2;
                   inventoryFunc(indexInList);
                 });
               },

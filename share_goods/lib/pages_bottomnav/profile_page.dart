@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_goods/myAppBar.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -9,9 +10,8 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profil'),
-        centerTitle: true,
+      appBar: MyAppBar(
+        title: 'Profil',
       ),
     );
   }

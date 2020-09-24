@@ -14,7 +14,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 1; 
 
   // Pages we move between via bottomnav
-  final pages = [Chat(), Items(), Profile()];
+  final pages = [Chat(), Item(), Profile()];
 
   @override
   Widget build(BuildContext context) {
