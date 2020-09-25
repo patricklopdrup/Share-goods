@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 
-class ItemsNeeded extends StatefulWidget {
+class ItemField extends StatefulWidget {
   final String displayText;
   final bool isNeeded;
   final int index;
   final Function moveFunc;
 
-  ItemsNeeded({this.displayText, this.isNeeded, this.index, this.moveFunc});
+  ItemField({this.displayText, this.isNeeded, this.index, this.moveFunc});
 
   @override
-  _ItemsNeededState createState() => _ItemsNeededState();
+  _ItemFieldState createState() => _ItemFieldState();
 }
 
-class _ItemsNeededState extends State<ItemsNeeded> {
+class _ItemFieldState extends State<ItemField> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,18 +79,6 @@ class _ItemsNeededState extends State<ItemsNeeded> {
               );
             },
           )
-
-          //ItemButtonNeeded(moveFunc: widget.moveFunc,)
-          // Conditional.single(
-          //   context: context,
-          //   conditionBuilder: (context) => widget.isNeeded,
-          //   widgetBuilder: (context) => ItemButtonNeeded(
-          //     moveFunc: widget.moveFunc,
-          //   ),
-          //   fallbackBuilder: (context) => ItemButtonInventory(
-          //     moveFunc: widget.moveFunc,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -100,8 +88,9 @@ class _ItemsNeededState extends State<ItemsNeeded> {
 // Titles that break the list
 class ItemTitle extends StatelessWidget {
   final String title;
+  final Function searchFunc;
 
-  ItemTitle({this.title});
+  ItemTitle({this.title, this.searchFunc});
 
   @override
   Widget build(BuildContext context) {
@@ -113,12 +102,33 @@ class ItemTitle extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 24,
-              color: myDarkGreen,
-            ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: myDarkGreen,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 5,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Søg',
+                    icon: Icon(Icons.search, color: myDarkGreen),
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      color: myDarkGreen,
+                    ),
+                  ),
+                  onChanged: this.searchFunc,
+                ),
+              ),
+            ],
           ),
           Divider(
             color: myDarkGreen,
