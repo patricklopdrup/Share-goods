@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:share_goods/itemField.dart';
 import 'package:share_goods/MyActionButton.dart';
 import 'package:share_goods/myAppBar.dart';
@@ -43,14 +44,17 @@ class _ItemListState extends State<ItemList> {
   Function needFunc = (index) {
     String tempName = need[index];
     need.removeAt(index);
-    filteredInventory.add(tempName);
+    inventory.add(tempName);
+    filteredInventory = inventory;
   };
 
   // Function to move from inventory list to need list
-  Function inventoryFunc = (index) {
-    String tempName = inventory[index];
-    filteredInventory.removeAt(index);
-    need.add(tempName);
+  Function inventoryFunc = (text) {
+    //String tempName = inventory[index];
+    inventory.remove(text);
+    filteredInventory.remove(text);
+    need.add(text);
+
   };
 
   Function searchFunc = (value) {
@@ -63,6 +67,19 @@ class _ItemListState extends State<ItemList> {
     }
     filteredInventory = temp;
   };
+
+  // Check focus on textfield
+  FocusNode _focus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener((_onFocusChange));
+  }
+
+  void _onFocusChange() {
+    print('Focus: ${_focus.hasFocus.toString()}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,20 +99,49 @@ class _ItemListState extends State<ItemList> {
             return buildNeedList(indexInList);
             // Show title of inventory after needed items
           } else if (index == need.length + 1) {
-            return TextField(
-              decoration: InputDecoration(
-                hintText: 'Søg',
-                icon: Icon(Icons.search, color: myDarkGreen),
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: myDarkGreen,
-                ),
+            return Container(
+              margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Beholdning',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: myDarkGreen,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Expanded(
+                        flex: 5,
+                        child: TextField(
+                          focusNode: _focus,
+                          decoration: InputDecoration(
+                            hintText: 'Søg',
+                            suffixIcon: Icon(Icons.search, color: myDarkGreen),
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: myDarkGreen,
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              searchFunc(value);
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(color: myDarkGreen, thickness: 1.5),
+                ],
               ),
-              onChanged: (value) {
-                setState(() {
-                  searchFunc(value);
-                });
-              },
             );
             // Show all inventory items
           } else {
@@ -156,17 +202,16 @@ class _ItemListState extends State<ItemList> {
 
   // Show the list of items in inventory
   ItemField buildInventoryList(int indexInList) {
+    String text = filteredInventory[indexInList];
     return ItemField(
-      displayText: filteredInventory[indexInList],
+      displayText: text,
       isNeeded: true,
       index: indexInList,
       moveFunc: () {
         setState(() {
-          inventoryFunc(indexInList);
+          inventoryFunc(text);
         });
       },
     );
   }
-
 }
-

@@ -88,9 +88,8 @@ class _ItemFieldState extends State<ItemField> {
 // Titles that break the list
 class ItemTitle extends StatelessWidget {
   final String title;
-  final Function searchFunc;
 
-  ItemTitle({this.title, this.searchFunc});
+  ItemTitle({this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -99,36 +98,15 @@ class ItemTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 18,
+              color: myDarkGreen,
+            ),
+          ),
           SizedBox(
             height: 10,
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: myDarkGreen,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 5,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Søg',
-                    icon: Icon(Icons.search, color: myDarkGreen),
-                    hintStyle: TextStyle(
-                      fontSize: 18,
-                      color: myDarkGreen,
-                    ),
-                  ),
-                  onChanged: this.searchFunc,
-                ),
-              ),
-            ],
           ),
           Divider(
             color: myDarkGreen,
