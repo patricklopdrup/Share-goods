@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/pages_bottomnav/chat_page.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
 import 'package:share_goods/pages_bottomnav/profile_page.dart';
 import 'package:share_goods/myColors.dart';
+import 'dart:io' show Platform;
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -11,10 +13,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // current index for bottomnavigation
-  int _currentIndex = 1; 
+  int _currentIndex = 1;
 
   // Pages we move between via bottomnav
-  final pages = [Chat(), Item(), Profile()];
+  final pages = [Profile(), Item(), Chat()];
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +42,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // List of icon and title for bottomNav
 final bottomNavItems = [
-  BottomNavigationBarItem(
-    title: Text('Chat'),
-    icon: Icon(Icons.chat),
-  ),
-  BottomNavigationBarItem(
-    title: Text('Varer'),
-    icon: Icon(Icons.shopping_cart),
-  ),
-  BottomNavigationBarItem(
-    title: Text('Profil'),
-    icon: Icon(Icons.account_circle),
-  ),
+  profileBarItem(),
+  shoppingCartBarItem(),
+  chatBarItem(),
 ];
+
+BottomNavigationBarItem profileBarItem() {
+  IconData icon = Platform.isAndroid
+      ? Icons.account_circle
+      : CupertinoIcons.profile_circled;
+  return BottomNavigationBarItem(
+    title: Text('Profil'),
+    icon: Icon(icon),
+  );
+}
+
+BottomNavigationBarItem shoppingCartBarItem() {
+  IconData icon =
+      Platform.isAndroid ? Icons.shopping_cart : CupertinoIcons.shopping_cart;
+  return BottomNavigationBarItem(
+    title: Text('Varer'),
+    icon: Icon(icon),
+  );
+}
+
+BottomNavigationBarItem chatBarItem() {
+  IconData icon = Platform.isAndroid
+      ? Icons.chat_bubble
+      : CupertinoIcons.conversation_bubble;
+  return BottomNavigationBarItem(
+    title: Text('Chat'),
+    icon: Icon(icon),
+  );
+}

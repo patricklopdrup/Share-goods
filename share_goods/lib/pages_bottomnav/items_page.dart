@@ -84,6 +84,7 @@ class _ItemListState extends State<ItemList> {
   @override
   Widget build(BuildContext context) {
     inventory.sort();
+    need.sort();
 
     return Container(
       child: ListView.builder(
