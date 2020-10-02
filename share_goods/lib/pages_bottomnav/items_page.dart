@@ -54,7 +54,6 @@ class _ItemListState extends State<ItemList> {
     inventory.remove(text);
     filteredInventory.remove(text);
     need.add(text);
-
   };
 
   Function searchFunc = (value) {
@@ -67,6 +66,8 @@ class _ItemListState extends State<ItemList> {
     }
     filteredInventory = temp;
   };
+
+  static final _textController = TextEditingController();
 
   // Check focus on textfield
   FocusNode _focus = FocusNode();
@@ -121,6 +122,7 @@ class _ItemListState extends State<ItemList> {
                       Expanded(
                         flex: 5,
                         child: TextField(
+                          controller: _textController,
                           focusNode: _focus,
                           decoration: InputDecoration(
                             hintText: 'Søg',
