@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/pages_bottomnav/chat_page.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
 import 'package:share_goods/pages_bottomnav/profile_page.dart';
 import 'package:share_goods/myColors.dart';
+import 'dart:io' show Platform;
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -10,10 +12,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0; // current index for bottomnavigation
+  // current index for bottomnavigation
+  int _currentIndex = 1;
 
   // Pages we move between via bottomnav
-  final pages = [Chat(), Items(), Profile()];
+  final pages = [Profile(), Item(), Chat()];
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +24,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: myLightGreen,
-        selectedItemColor: myDartGreen,
+        selectedItemColor: myDarkGreen,
         unselectedItemColor: Colors.white,
         selectedFontSize: 12,
         unselectedFontSize: 12,
-        selectedIconTheme: IconThemeData(color: myDartGreen),
+        selectedIconTheme: IconThemeData(color: myDarkGreen),
         unselectedIconTheme: IconThemeData(color: Colors.white),
         currentIndex: _currentIndex,
         items: bottomNavItems,
@@ -39,16 +42,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // List of icon and title for bottomNav
 final bottomNavItems = [
-  BottomNavigationBarItem(
-    title: Text('Chat'),
-    icon: Icon(Icons.chat),
-  ),
-  BottomNavigationBarItem(
-    title: Text('Varer'),
-    icon: Icon(Icons.shopping_cart),
-  ),
-  BottomNavigationBarItem(
-    title: Text('Profil'),
-    icon: Icon(Icons.account_circle),
-  ),
+  profileBarItem(),
+  shoppingCartBarItem(),
+  chatBarItem(),
 ];
+
+BottomNavigationBarItem profileBarItem() {
+  IconData icon = Platform.isAndroid
+      ? Icons.account_circle
+      : CupertinoIcons.profile_circled;
+  return BottomNavigationBarItem(
+    title: Text('Profil'),
+    icon: Icon(icon),
+  );
+}
+
+BottomNavigationBarItem shoppingCartBarItem() {
+  IconData icon =
+      Platform.isAndroid ? Icons.shopping_cart : CupertinoIcons.shopping_cart;
+  return BottomNavigationBarItem(
+    title: Text('Varer'),
+    icon: Icon(icon),
+  );
+}
+
+BottomNavigationBarItem chatBarItem() {
+  IconData icon = Platform.isAndroid
+      ? Icons.chat_bubble
+      : CupertinoIcons.conversation_bubble;
+  return BottomNavigationBarItem(
+    title: Text('Chat'),
+    icon: Icon(icon),
+  );
+}

@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
-import 'myColors.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 
-class ItemsNeeded extends StatefulWidget {
+class ItemField extends StatefulWidget {
   final String displayText;
   final bool isNeeded;
   final int index;
   final Function moveFunc;
 
-  ItemsNeeded({this.displayText, this.isNeeded, this.index, this.moveFunc});
+  ItemField({this.displayText, this.isNeeded, this.index, this.moveFunc});
 
   @override
-  _ItemsNeededState createState() => _ItemsNeededState();
+  _ItemFieldState createState() => _ItemFieldState();
 }
 
-class _ItemsNeededState extends State<ItemsNeeded> {
+class _ItemFieldState extends State<ItemField> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,18 +79,6 @@ class _ItemsNeededState extends State<ItemsNeeded> {
               );
             },
           )
-
-          //ItemButtonNeeded(moveFunc: widget.moveFunc,)
-          // Conditional.single(
-          //   context: context,
-          //   conditionBuilder: (context) => widget.isNeeded,
-          //   widgetBuilder: (context) => ItemButtonNeeded(
-          //     moveFunc: widget.moveFunc,
-          //   ),
-          //   fallbackBuilder: (context) => ItemButtonInventory(
-          //     moveFunc: widget.moveFunc,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -111,18 +98,18 @@ class ItemTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 10,
-          ),
           Text(
             title,
             style: TextStyle(
-              fontSize: 24,
-              color: myDartGreen,
+              fontSize: 18,
+              color: myDarkGreen,
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
           Divider(
-            color: myDartGreen,
+            color: myDarkGreen,
             thickness: 1.5,
           ),
         ],
