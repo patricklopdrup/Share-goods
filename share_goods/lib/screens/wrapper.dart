@@ -4,7 +4,7 @@ import 'package:share_goods/models/user.dart';
 import 'package:share_goods/screens/authenticate/authenticate.dart';
 import 'package:share_goods/screens/authenticate/register.dart';
 import 'package:share_goods/screens/authenticate/sign_in.dart';
-import 'file:///Y:/DTU/5.%20Semester/Appudvikling/Sharegoods/share_goods/lib/screens/home/home.dart';
+import 'package:share_goods/screens/home/home.dart';
 
 
 class Wrapper extends StatelessWidget {

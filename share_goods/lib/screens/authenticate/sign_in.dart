@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/screens/authenticate/register.dart';
+import 'package:share_goods/screens/home/home.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
 
@@ -92,6 +93,7 @@ class _SignInState extends State<SignIn> {
                       onPressed: () async {
                         print('Email is:' + email);
                         print('Password is' + password);
+                        return MyHomePage();
                       }
                   ),
                 ),
