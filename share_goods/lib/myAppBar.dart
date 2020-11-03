@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
 import 'package:flutter/foundation.dart';
+import 'package:share_goods/services/auth.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Icon icon;
+
+  final AuthService _auth = AuthService();
 
   // Title is required and icon is default the account_circle icon
   MyAppBar(
@@ -31,7 +34,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             icon: this.icon,
             color: myDarkGreen,
-            onPressed: () {},
+            onPressed: () async {
+              await _auth.signOut();
+            },
             iconSize: 36,
           )
         ],
