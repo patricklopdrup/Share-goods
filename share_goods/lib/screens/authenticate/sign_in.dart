@@ -114,10 +114,10 @@ class _SignInState extends State<SignIn> {
                       text: 'Register',
                       style: linkStyle,
                       recognizer: TapGestureRecognizer()..onTap = () {
-                        widget.togglePage();
+                      //widget.togglePage();
                       print('Clicked Register');
                       setState(() {
-                        Register();
+                        Navigator.pushNamed(context, '/register');
                       });
                     },
                   )

@@ -10,7 +10,6 @@ import 'package:share_goods/screens/home/home.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
    // Specify we need user from Stream//accessing user data from Provider in main.dart
     final user = Provider.of<User>(context);
     print(user);
@@ -20,6 +19,5 @@ class Wrapper extends StatelessWidget {
     } else {
       return MyHomePage();
     }
-
   }
 }
