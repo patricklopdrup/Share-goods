@@ -93,7 +93,6 @@ class _SignInState extends State<SignIn> {
                       onPressed: () async {
                         print('Email is:' + email);
                         print('Password is' + password);
-                        return MyHomePage();
                       }
                   ),
                 ),
