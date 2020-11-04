@@ -53,7 +53,8 @@ class _SignInState extends State<SignIn> {
                   decoration: InputDecoration(
                       errorStyle: TextStyle(
                         fontSize: 8.0,
-                      )
+                      ),
+                    hintText: 'Email'
                   ),
                   validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? 'Enter valid email' : null,
                 onChanged: (val) {
@@ -68,7 +69,8 @@ class _SignInState extends State<SignIn> {
                   decoration: InputDecoration(
                       errorStyle: TextStyle(
                         fontSize: 8.0,
-                      )
+                      ),
+                    hintText: 'Password'
                   ),
                   validator: (val) => val.length < 6 ? 'Password must be atleast 6 chars long' : null,
                   obscureText: true,
@@ -91,11 +93,31 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(color: Colors.white, ),
                       ),
                       onPressed: () async {
-                        print('Email is:' + email);
-                        print('Password is' + password);
+                        if (_formKey.currentState.validate()) {
+                          dynamic result = await _auth.signInMail(email.trim(),
+                              password.trim());
+                          print('Result is' + result);
+                          if (result = null) {
+                            print('Result was null');
+                          } else {
+                            setState(() => error = 'Enter valid input');
+                          }
+                          print('Email is:' + email);
+                          print('Password is' + password);
+                        }
                       }
                   ),
+
                 ),
+              ),
+
+              SizedBox(height: 12.0),
+              Text(
+                  error,
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 12.0
+                  )
               ),
 
               RichText(
