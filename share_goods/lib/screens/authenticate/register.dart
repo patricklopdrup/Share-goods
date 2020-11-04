@@ -42,7 +42,8 @@ class _RegisterState extends State<Register> {
                       decoration: InputDecoration(
                           errorStyle: TextStyle(
                               fontSize: 8.0,
-                          )
+                          ),
+                        hintText: 'Email'
                       ),
                     validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? 'Enter valid email' : null,
                       onChanged: (val) {
@@ -55,7 +56,8 @@ class _RegisterState extends State<Register> {
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
                         fontSize: 8.0,
-                      )
+                      ),
+                      hintText: 'Password'
                     ),
                       validator: (val) => val.length < 6 ? 'Password must be atleast 6 chars long' : null,
                       obscureText: true,
@@ -91,7 +93,7 @@ class _RegisterState extends State<Register> {
                   Text(
                     error,
                     style: TextStyle(
-                      color: myLightGreen,
+                      color: Colors.red,
                       fontSize: 12.0
                     )
                   )
