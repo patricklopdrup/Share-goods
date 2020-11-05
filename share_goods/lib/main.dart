@@ -21,9 +21,7 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       child: MaterialApp(
         routes: {
-          '/': (context) => Wrapper(),
-          //'/signin': (context) => SignIn(),
-          // '/register': (context) => Register(togglePage: () => print('hej'),),
+          '/': (context) => Wrapper()
         },
       ),
     );

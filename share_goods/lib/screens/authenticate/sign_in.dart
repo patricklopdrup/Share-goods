@@ -97,7 +97,7 @@ class _SignInState extends State<SignIn> {
                           dynamic result = await _auth.signInMail(email.trim(),
                               password.trim());
                           print('Result is' + result);
-                          if (result = null) {
+                          if (result == null) {
                             print('Result was null');
                           } else {
                             setState(() => error = 'Enter valid input');
@@ -135,11 +135,11 @@ class _SignInState extends State<SignIn> {
                       text: 'Register',
                       style: linkStyle,
                       recognizer: TapGestureRecognizer()..onTap = () {
-                      //widget.togglePage();
+                      widget.togglePage();
                       print('Clicked Register');
-                      setState(() {
-                        Navigator.pushNamed(context, '/register');
-                      });
+                      //setState(() {
+                        //widget.togglePage();
+                      //});
                     },
                   )
                 ]

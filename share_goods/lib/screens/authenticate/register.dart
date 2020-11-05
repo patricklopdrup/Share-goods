@@ -29,8 +29,15 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
     return Scaffold(
-      appBar: MyAppBar(
-        title: 'Register',
+      appBar: AppBar(
+        title: Text('Register'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            widget.togglePage();
+          },
+        ),
+        centerTitle: true,
       ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 75.0),
@@ -102,8 +109,8 @@ class _RegisterState extends State<Register> {
                           dynamic result = await _auth
                               .registerWithEmailAndPassword(
                               email.trim(), password.trim());
-                          print('Result is' + result);
-                          if (result = null) {
+                          print('Result is' + result.uid);
+                          if (result == null) {
                             print('Result was null');
                           }
                         } catch (e) {
