@@ -27,6 +27,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
     return Scaffold(
       appBar: MyAppBar(
         title: 'Register',
@@ -48,7 +49,8 @@ class _RegisterState extends State<Register> {
                     validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? 'Enter valid email' : null,
                       onChanged: (val) {
                         setState(() => email = val);
-                      }
+                      },
+                      onEditingComplete: () => node.nextFocus()
                   ),
 
                   SizedBox(height: 20.0),
@@ -63,7 +65,8 @@ class _RegisterState extends State<Register> {
                       obscureText: true,
                       onChanged: (val) {
                         setState(() => password = val);
-                      }
+                      },
+                      onFieldSubmitted: (_) => register_user()
                   ),
 
                   SizedBox(height: 20.0),
@@ -71,38 +74,7 @@ class _RegisterState extends State<Register> {
                       color: myLightGreen,
                       child: Text('Register',
                       style: TextStyle(color: Colors.white)),
-                      onPressed: () async {
-                        // check the form for empty spots and validity
-
-                        if (_formKey.currentState.validate()) {
-                          print(email);
-                          print(password);
-
-                          try {
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(
-                                email.trim(), password.trim());
-                            print('Result is' + result);
-                            if (result = null) {
-                              print('Result was null');
-                            }
-                          } catch (e) {
-                            switch(e) {
-                              case 'email-already-in-use': {
-                                setState(() => error = 'Entered email is already in use!');
-                              }
-                              break;
-
-                              default: {
-                                print('this is weird bro!');
-                              }
-                              break;
-                            }
-                          }
-                        }else{
-                          setState(() => error = 'Enter valid input');
-                        }
-                      }
+                      onPressed: register_user
                   ),
                   SizedBox(height: 12.0),
                   Text(
@@ -118,4 +90,37 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+
+  void register_user() async {
+                      // check the form for empty spots and validity
+  
+                      if (_formKey.currentState.validate()) {
+                        print(email);
+                        print(password);
+  
+                        try {
+                          dynamic result = await _auth
+                              .registerWithEmailAndPassword(
+                              email.trim(), password.trim());
+                          print('Result is' + result);
+                          if (result = null) {
+                            print('Result was null');
+                          }
+                        } catch (e) {
+                          switch(e) {
+                            case 'email-already-in-use': {
+                              setState(() => error = 'Entered email is already in use!');
+                            }
+                            break;
+  
+                            default: {
+                              print('Error with registering: ' + e);
+                            }
+                            break;
+                          }
+                        }
+                      }else{
+                        setState(() => error = 'Enter valid input');
+                      }
+                    }
 }
