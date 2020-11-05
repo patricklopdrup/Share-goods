@@ -8,13 +8,13 @@ class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Create user based on FirebaseUser
-  User _userFromFirebase(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  LocalUser _userFromFirebase(User user) {
+    return user != null ? LocalUser(uid: user.uid) : null;
   }
 
   // setup stream, so every time a user signs in / signs out we get a response, and map it to our user
-  Stream<User> get user {
-    return _auth.onAuthStateChanged
+  Stream<LocalUser> get user {
+    return _auth.authStateChanges()
     //.map((FirebaseUser user) => _userFromFirebase(user));
     .map(_userFromFirebase);
   }
@@ -22,8 +22,7 @@ class AuthService{
   // method to sign in with email & password
   Future signInMail(String mail, String password) async {
     try{
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: mail, password: password);
-      FirebaseUser user = result.user;
+      User user = (await _auth.signInWithEmailAndPassword(email: mail, password: password)).user;
       return _userFromFirebase(user);
     }catch(e){
       print(e.toString());
@@ -33,8 +32,7 @@ class AuthService{
   // method to register with email & password
   Future registerWithEmailAndPassword(String email, String password) async {
     try{
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
+      User user = (await _auth.createUserWithEmailAndPassword(email: email, password: password)).user;
       return _userFromFirebase(user);
     }catch(e){
       print(e.toString());
