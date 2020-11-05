@@ -78,11 +78,26 @@ class _RegisterState extends State<Register> {
                           print(email);
                           print(password);
 
-                          dynamic result = await _auth
-                              .registerWithEmailAndPassword(email.trim(), password.trim());
-                          print('Result is' + result);
-                          if (result = null) {
-                            print('Result was null');
+                          try {
+                            dynamic result = await _auth
+                                .registerWithEmailAndPassword(
+                                email.trim(), password.trim());
+                            print('Result is' + result);
+                            if (result = null) {
+                              print('Result was null');
+                            }
+                          } catch (e) {
+                            switch(e) {
+                              case 'email-already-in-use': {
+                                setState(() => error = 'Entered email is already in use!');
+                              }
+                              break;
+
+                              default: {
+                                print('this is weird bro!');
+                              }
+                              break;
+                            }
                           }
                         }else{
                           setState(() => error = 'Enter valid input');
