@@ -28,7 +28,6 @@ class _ItemState extends State<Item> {
           setState(() {
             print('floating action');
             filteredInventory.removeAt(0);
-            FirebaseCrashlytics.instance.crash();
           });
         },
       ),
