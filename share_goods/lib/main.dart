@@ -18,15 +18,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<LocalUser>.value(
-        value: AuthService().user,
-        child: MaterialApp(
-          routes: {
-            '/': (context) => Wrapper(),
-            '/signin': (context) => SignIn(),
-            '/register': (context) => Register(togglePage: ()=>print("hej"),),
-          },
+      value: AuthService().user,
+      child: MaterialApp(
+        routes: {
+          '/': (context) => Wrapper(),
+          //'/signin': (context) => SignIn(),
+          // '/register': (context) => Register(togglePage: () => print('hej'),),
+        },
       ),
     );
   }
 }
-
