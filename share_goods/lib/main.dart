@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (context) => Wrapper(),
             '/signin': (context) => SignIn(),
-            '/register': (context) => Register(togglePage: ()=>print("hej"),),
+            '/register': (context) => Register(),
           },
       ),
     );
