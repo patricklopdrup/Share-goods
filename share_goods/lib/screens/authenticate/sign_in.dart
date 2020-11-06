@@ -50,6 +50,7 @@ class _SignInState extends State<SignIn> {
 
               SizedBox(height: 20.0),
               TextFormField(
+                keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                       errorStyle: TextStyle(
                         fontSize: 8.0,

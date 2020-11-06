@@ -47,6 +47,7 @@ class _RegisterState extends State<Register> {
                 children: <Widget>[
                   SizedBox(height: 20.0),
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           errorStyle: TextStyle(
                               fontSize: 8.0,
