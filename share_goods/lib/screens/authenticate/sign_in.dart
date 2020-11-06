@@ -25,7 +25,6 @@ class _SignInState extends State<SignIn> {
 
   // key used for making clickable TextSpan
   final GlobalKey _textKey = new GlobalKey();
-
   final _formKey = GlobalKey<FormState>();
 
   // text field variables
@@ -80,6 +79,8 @@ class _SignInState extends State<SignIn> {
                       SizedBox(height: 30.0,),
                       _buildPasswordTextField(),
                       _buildForgotPassword(),
+                      SizedBox(height: 5.0),
+                      Text(error, style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'OpenSans'),),
                       _buildLoginButton(),
                       _buildRegisterButton(),
                     ],
@@ -106,6 +107,7 @@ class _SignInState extends State<SignIn> {
         alignment: Alignment.centerLeft,
         height: 60,
         decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(10.0),
             color: myGradientGreen1,
             boxShadow: [
@@ -120,6 +122,7 @@ class _SignInState extends State<SignIn> {
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
+            errorStyle: TextStyle(height: 0) ,
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 15),
               prefixIcon: Icon(
@@ -129,7 +132,7 @@ class _SignInState extends State<SignIn> {
               hintText: 'Enter your E-mail',
               hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
           ),
-            validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? 'Enter valid email' : null,
+            validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
             onChanged: (val) {
               setState(() {
                 email = val;
@@ -153,6 +156,7 @@ class _SignInState extends State<SignIn> {
         height: 60,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.white),
             color: myGradientGreen1,
             boxShadow: [
               BoxShadow(
@@ -167,6 +171,7 @@ class _SignInState extends State<SignIn> {
           obscureText: true,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
+            errorStyle: TextStyle(height: 0),
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 15),
               prefixIcon: Icon(
@@ -176,7 +181,7 @@ class _SignInState extends State<SignIn> {
               hintText: 'Enter your Password',
               hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
           ),
-            validator: (val) => val.length < 6 ? 'Password must be atleast 6 chars long' : null,
+            validator: (val) => val.length < 6 ? '' : null,
             onChanged: (val) {
               setState(() {
                 password = val;
@@ -219,7 +224,7 @@ class _SignInState extends State<SignIn> {
             padding: EdgeInsets.all(15.0),
             child: Text(
               'LOGIN',
-              style: TextStyle(color: Color(0xFF527DAA), letterSpacing: 1.5, fontSize: 18.0, fontWeight: FontWeight.bold, fontFamily: 'OpenSans' ),
+              style: TextStyle(color: Color(0xFF527DAA), letterSpacing: 4.0, fontSize: 18.0, fontWeight: FontWeight.bold, fontFamily: 'OpenSans' ),
             ),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
@@ -228,11 +233,12 @@ class _SignInState extends State<SignIn> {
                 print('Result is' + result);
                 if (result == null) {
                   print('Result was null');
-                } else {
-                  setState(() => error = 'Enter valid input');
+                  setState(() => error = 'Enter valid email or password');
                 }
                 print('Email is:' + email);
                 print('Password is' + password);
+              }else{
+                setState(() => error = 'Enter valid email or password');
               }
             }
         ),
@@ -249,7 +255,7 @@ class _SignInState extends State<SignIn> {
                   text: 'No account? ',
                   style: defaultStyle,
                   recognizer: TapGestureRecognizer()..onTap = (){
-                    print('Clicked Sign in');
+                    print('Clicked No Account');
                   }
               ),
               TextSpan(
@@ -258,9 +264,6 @@ class _SignInState extends State<SignIn> {
                 recognizer: TapGestureRecognizer()..onTap = () {
                   widget.togglePage();
                   print('Clicked Register');
-                  //setState(() {
-                  //widget.togglePage();
-                  //});
                 },
               )
             ]
