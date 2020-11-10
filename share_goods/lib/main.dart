@@ -6,10 +6,12 @@ import 'package:share_goods/screens/authenticate/sign_in.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:share_goods/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   runApp(MyApp());
 }
 
