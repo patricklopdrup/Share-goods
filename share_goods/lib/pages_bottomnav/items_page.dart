@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:share_goods/itemField.dart';
 import 'package:share_goods/MyActionButton.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
-import 'package:share_goods/screens/myDrawer.dart';
+
+//import 'package:share_goods/screens/myDrawer.dart';
 import 'package:share_goods/data/testData.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class Item extends StatefulWidget {
   @override
@@ -19,7 +23,7 @@ class _ItemState extends State<Item> {
       appBar: MyAppBar(
         title: 'Varer',
       ),
-      drawer: MyDrawer(),
+      //drawer: MyDrawer(),
       // Display list in body
       body: ItemList(),
       floatingActionButton: MyActionButton(
