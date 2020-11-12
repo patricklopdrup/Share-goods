@@ -53,7 +53,7 @@ class _SignInState extends State<SignIn> {
                   colors: [
                     myGradientGreen0,
                     myGradientGreen1,
-                    myDarkGreen,
+                    myGradientGreen2,
                   ],
                   stops: [0.1, 0.6, 0.9],
                 )
