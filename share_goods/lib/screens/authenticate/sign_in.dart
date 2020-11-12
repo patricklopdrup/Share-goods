@@ -119,6 +119,7 @@ class _SignInState extends State<SignIn> {
             ]
         ),
         child: TextFormField(
+          key: Key('email_input'),
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
@@ -167,6 +168,7 @@ class _SignInState extends State<SignIn> {
             ]
         ),
         child: TextFormField(
+            key: Key('password_input'),
           keyboardType: TextInputType.text,
           obscureText: true,
           style: TextStyle(color: Colors.white),
@@ -219,6 +221,7 @@ class _SignInState extends State<SignIn> {
             borderRadius: BorderRadius.circular(30.0)
         ),
         child: RaisedButton(
+            key: Key('login_button'),
             color: Colors.white,
             elevation: 5.0,
             padding: EdgeInsets.all(15.0),
