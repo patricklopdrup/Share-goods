@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "678149304895",
+    "firebase_url": "https://sharegoods-9c83a.firebaseio.com",
+    "project_id": "sharegoods-9c83a",
+    "storage_bucket": "sharegoods-9c83a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678149304895:android:3b037ebc01598a8a76be8a",
+        "android_client_info": {
+          "package_name": "com.plopdrup.share_goods"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678149304895-eqfidp6r41uo798ev61gad0a7b27d4gl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgg7S25nArFt3_agJxLQEeQPvEFx40rmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678149304895-eqfidp6r41uo798ev61gad0a7b27d4gl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
