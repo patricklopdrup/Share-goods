@@ -38,27 +38,25 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.6, 0.9],
+            colors: [
+              myGradientGreen0,
+              myGradientGreen1,
+              myGradientGreen2,
+            ],
+          ),
+        ),
+    child: Scaffold(
+        backgroundColor: Colors.transparent,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: <Widget>[
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    myGradientGreen0,
-                    myGradientGreen1,
-                    myGradientGreen2,
-                  ],
-                  stops: [0.1, 0.6, 0.9],
-                )
-              ),
-            ),
             Container(
               height: double.infinity,
               child: SingleChildScrollView(
@@ -92,6 +90,7 @@ class _SignInState extends State<SignIn> {
 
         ),
       )
+    )
     )
     ;
   }
