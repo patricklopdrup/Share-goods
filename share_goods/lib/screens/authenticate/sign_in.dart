@@ -2,13 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
-import 'package:share_goods/myAppBar.dart';
-import 'package:share_goods/screens/authenticate/register.dart';
-import 'package:share_goods/screens/home/home.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
-
-
 
 class SignIn extends StatefulWidget {
   final Function togglePage;
@@ -31,7 +26,7 @@ class _SignInState extends State<SignIn> {
   String email ='';
   String password = '';
   String error = '';
-
+  bool checkS = false;
   // text styles
   TextStyle defaultStyle = TextStyle(color: Colors.white, fontSize: 10.0);
   TextStyle linkStyle = TextStyle(color: myLightGreen, fontSize: 12.0);
@@ -51,48 +46,50 @@ class _SignInState extends State<SignIn> {
             ],
           ),
         ),
-    child: Scaffold(
-        backgroundColor: Colors.transparent,
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: double.infinity,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 40.0,
-                  vertical: 120.0,
-                ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Welcome to',style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.normal),),
-                      Text('ShareGoods', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 30.0, fontWeight: FontWeight.bold),),
-                      SizedBox(height: 30.0),
-                      _buildEmailTextField(),
-                      SizedBox(height: 30.0,),
-                      _buildPasswordTextField(),
-                      _buildForgotPassword(),
-                      SizedBox(height: 5.0),
-                      Text(error, style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'OpenSans'),),
-                      _buildLoginButton(),
-                      _buildRegisterButton(),
-                    ],
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+          body: GestureDetector(
+            onTap: (){
+              FocusScope.of(context).unfocus();
+              checkS = false;
+              error = '';
+            },
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: double.infinity,
+                  child: SingleChildScrollView(
+                    physics: checkS ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 40.0,
+                      vertical: 100.0,
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Welcome to',style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.normal),),
+                          Text('ShareGoods', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 30.0, fontWeight: FontWeight.bold),),
+                          SizedBox(height: 30.0),
+                          _buildEmailTextField(),
+                          SizedBox(height: 30.0,),
+                          _buildPasswordTextField(),
+                          _buildForgotPassword(),
+                          SizedBox(height: 5.0),
+                          Text(error, style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'OpenSans'),),
+                          _buildLoginButton(),
+                          _buildRegisterButton(),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            )
-          ]
-
-        ),
+                )
+              ]
+          ),
+        )
       )
-    )
-    )
-    ;
+    );
   }
 
   Widget _buildEmailTextField() {
@@ -131,12 +128,15 @@ class _SignInState extends State<SignIn> {
               hintText: 'Enter your E-mail',
               hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
           ),
-            validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
-            onChanged: (val) {
-              setState(() {
-                email = val;
-              });
-            }
+          onTap: (){
+            checkS = true;
+          },
+          validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
+          onChanged: (val) {
+            setState(() {
+              email = val;
+            });
+          }
         ),
       )
     ],
@@ -180,6 +180,9 @@ class _SignInState extends State<SignIn> {
               hintText: 'Enter your Password',
               hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
           ),
+            onTap: (){
+              checkS = true;
+            },
             validator: (val) => val.length < 6 ? '' : null,
             onChanged: (val) {
               setState(() {

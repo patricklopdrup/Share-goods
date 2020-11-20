@@ -18,6 +18,7 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String error = '';
+  bool checkS = false;
 
   // instance of AuthService class auth from services/auth.dart
   final AuthService _auth = AuthService();
@@ -26,34 +27,36 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
+    return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.6, 0.9],
+            colors: [
+              myLightBlue1,
+              myLightBlue2,
+              myLightBlue3,
+            ],
+          ),
+        ),
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+          body: GestureDetector(
+            onTap: (){
+              FocusScope.of(context).unfocus();
+              checkS = false;
+              error = '';
+            },
+            child: Stack(
               children: <Widget>[
                 Container(
                   height: double.infinity,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          myLightBlue1,
-                          myLightBlue2,
-                          myLightBlue3,
-                        ],
-                        stops: [0.1, 0.6, 0.9],
-                      )
-                  ),
-                ),
-                Container(
-                  height: double.infinity,
                   child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: checkS ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.symmetric(
                       horizontal: 40.0,
-                      vertical: 120.0,
+                      vertical: 100.0,
                     ),
                     child: Form(
                       key: _formKey,
@@ -77,13 +80,16 @@ class _RegisterState extends State<Register> {
                   ),
                 )
               ]
-          ),
+            ),
+          )
         )
     );
   }
 
   Widget _buildUsernameTextField() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
       Text(
         'Name',
         style: TextStyle(color: Colors.white),
@@ -100,7 +106,7 @@ class _RegisterState extends State<Register> {
               BoxShadow(
                 color: Colors.black12,
                 blurRadius: 10.0,
-                offset: Offset(0,3),
+                offset: Offset(0,5),
               )
             ]
         ),
@@ -116,8 +122,11 @@ class _RegisterState extends State<Register> {
                   color: Colors.white,
                 ),
                 hintText: 'Enter your Name',
-                hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
+                hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans',)
             ),
+            onTap: (){
+              checkS = true;
+            },
             validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
             onChanged: (val) {
               setState(() {
@@ -131,7 +140,9 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _buildEmailTextField() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
       Text(
         'Email',
         style: TextStyle(color: Colors.white),
@@ -166,6 +177,9 @@ class _RegisterState extends State<Register> {
                 hintText: 'Enter your E-mail',
                 hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
             ),
+            onTap: (){
+              checkS = true;
+            },
             validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
             onChanged: (val) {
               setState(() {
@@ -173,8 +187,8 @@ class _RegisterState extends State<Register> {
               });
             }
         ),
-      )
-    ],
+       ),
+      ],
     );
   }
 
@@ -215,6 +229,9 @@ class _RegisterState extends State<Register> {
                 hintText: 'Enter your Password',
                 hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
             ),
+            onTap: (){
+              checkS = true;
+            },
             validator: (val) => val.length < 6 ? '' : null,
             onChanged: (val) {
               setState(() {
