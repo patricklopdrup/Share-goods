@@ -22,3 +22,5 @@ doc/api/
 
 # Avoid file for keystore
 **/key.properties
+
+.idea/**
