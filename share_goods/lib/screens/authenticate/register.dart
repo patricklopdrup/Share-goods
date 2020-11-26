@@ -27,88 +27,97 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.1, 0.6, 0.9],
-            colors: [
-              myGradientGreen0,
-              myGradientGreen1,
-              myGradientGreen2,
-            ],
-          ),
-        ),
-        child: Scaffold(
-            backgroundColor: Colors.transparent,
-          body: GestureDetector(
-            onTap: (){
-              FocusScope.of(context).unfocus();
-              checkS = false;
-              error = '';
-            },
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    physics: checkS ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 100.0,
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Register to',style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.normal),),
-                          Text('ShareGoods', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 30.0, fontWeight: FontWeight.bold),),
-                          SizedBox(height: 30.0),
-                          _buildUsernameTextField(),
-                          SizedBox(height: 30.0),
-                          _buildEmailTextField(),
-                          SizedBox(height: 30.0,),
-                          _buildPasswordTextField(),
-                          SizedBox(height: 5.0),
-                          Text(error, style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'OpenSans'),),
-                          _buildRegisterButton(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: AppBar(
-                    title: Align(
-                      alignment: Alignment(-1.25,0),
-                      child: InkWell(
-                        onTap: (){
-                          print('Pressed back');
-                          widget.togglePage();
-                        },
-                        child: Text('Sign in', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.bold),),
-                    ),// You can add title here
-                    ),
-                    leading: new IconButton(
-                      icon: new Icon(Icons.arrow_back_ios, color: Colors.white, size: 20.0,),
-                      onPressed: () {
-                        widget.togglePage();
-                      },
-                    ),
-                    backgroundColor: myGradientGreen2.withOpacity(0.4), //You can make this transparent
-                    elevation: 0.0, //No shadow
-                  ),
-                ),
-              ]
+    return WillPopScope(
+      // To override the android backbutton
+      onWillPop: _onBackPressed,
+      child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.1, 0.6, 0.9],
+              colors: [
+                myGradientGreen0,
+                myGradientGreen1,
+                myGradientGreen2,
+              ],
             ),
+          ),
+          child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: GestureDetector(
+                onTap: (){
+                  FocusScope.of(context).unfocus();
+                  checkS = false;
+                  error = '';
+                },
+                child: Stack(
+                    children: <Widget>[
+                      Container(
+                        height: double.infinity,
+                        child: SingleChildScrollView(
+                          physics: checkS ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 40.0,
+                            vertical: 100.0,
+                          ),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text('Register to',style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.normal),),
+                                Text('ShareGoods', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 30.0, fontWeight: FontWeight.bold),),
+                                SizedBox(height: 30.0),
+                                _buildUsernameTextField(),
+                                SizedBox(height: 30.0),
+                                _buildEmailTextField(),
+                                SizedBox(height: 30.0,),
+                                _buildPasswordTextField(),
+                                SizedBox(height: 5.0),
+                                Text(error, style: TextStyle(color: Colors.red, fontSize: 12, fontFamily: 'OpenSans'),),
+                                _buildRegisterButton(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0.0,
+                        left: 0.0,
+                        right: 0.0,
+                        child: AppBar(
+                          title: Align(
+                            alignment: Alignment(-1.25,0),
+                            child: InkWell(
+                              onTap: (){
+                                print('Pressed back');
+                                widget.togglePage();
+                              },
+                              child: Text('Sign in', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.bold),),
+                            ),// You can add title here
+                          ),
+                          leading: new IconButton(
+                            icon: new Icon(Icons.arrow_back_ios, color: Colors.white, size: 20.0,),
+                            onPressed: () {
+                              widget.togglePage();
+                            },
+                          ),
+                          backgroundColor: myGradientGreen2.withOpacity(0.4), //You can make this transparent
+                          elevation: 0.0, //No shadow
+                        ),
+                      ),
+                    ]
+                ),
+              )
           )
-        )
+      ),
     );
+  }
+
+  // Function to override the android backbutton
+  Future<bool> _onBackPressed() {
+    return widget.togglePage();
   }
 
   Widget _buildUsernameTextField() {
@@ -286,7 +295,7 @@ class _RegisterState extends State<Register> {
               style: TextStyle(color: Color(0xFF527DAA), letterSpacing: 4.0, fontSize: 18.0, fontWeight: FontWeight.bold, fontFamily: 'OpenSans' ),
             ),
             onPressed: () async {
-             registerUser();
+              registerUser();
             }
         ),
       ),

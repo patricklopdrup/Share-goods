@@ -12,7 +12,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
    // Specify we need user from Stream//accessing user data from Provider in main.dart
     final user = Provider.of<LocalUser>(context);
-    print(user);
+    print("user er $user");
     //return either Home or Authenticate based on if user is signed in or not.
     if(user == null){
       return Authenticate();
