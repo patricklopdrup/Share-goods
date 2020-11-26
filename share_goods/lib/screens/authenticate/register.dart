@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/services/auth.dart';
-
+import 'package:flutter/gestures.dart';
 import '../../myColors.dart';
 
 
@@ -34,9 +34,9 @@ class _RegisterState extends State<Register> {
             end: Alignment.bottomCenter,
             stops: [0.1, 0.6, 0.9],
             colors: [
-              myLightBlue1,
-              myLightBlue2,
-              myLightBlue3,
+              myGradientGreen0,
+              myGradientGreen1,
+              myGradientGreen2,
             ],
           ),
         ),
@@ -78,7 +78,32 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                )
+                ),
+                Positioned(
+                  top: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: AppBar(
+                    title: Align(
+                      alignment: Alignment(-1.25,0),
+                      child: InkWell(
+                        onTap: (){
+                          print('Pressed back');
+                          widget.togglePage();
+                        },
+                        child: Text('Sign in', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.bold),),
+                    ),// You can add title here
+                    ),
+                    leading: new IconButton(
+                      icon: new Icon(Icons.arrow_back_ios, color: Colors.white, size: 20.0,),
+                      onPressed: () {
+                        widget.togglePage();
+                      },
+                    ),
+                    backgroundColor: myGradientGreen2.withOpacity(0.4), //You can make this transparent
+                    elevation: 0.0, //No shadow
+                  ),
+                ),
               ]
             ),
           )
@@ -101,7 +126,7 @@ class _RegisterState extends State<Register> {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(10.0),
-            color: myLightBlue2,
+            color: myGradientGreen1,
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,
@@ -154,7 +179,7 @@ class _RegisterState extends State<Register> {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(10.0),
-            color: myLightBlue2,
+            color: myGradientGreen1,
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,
@@ -205,7 +230,7 @@ class _RegisterState extends State<Register> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             border: Border.all(color: Colors.white),
-            color: myLightBlue2,
+            color: myGradientGreen1,
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,
