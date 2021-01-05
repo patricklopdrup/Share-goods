@@ -25,7 +25,7 @@ class _ItemFieldState extends State<ItemField> {
           Expanded(
             flex: 5,
             child: Container(
-              color: myLightGreen,
+              color: myGradientGreen2,
               child: Center(
                 heightFactor: 1.5,
                 child: Text(
