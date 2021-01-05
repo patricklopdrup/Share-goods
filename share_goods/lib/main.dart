@@ -20,8 +20,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<LocalUser>.value(
+      //Specify Stream to listen to
       value: AuthService().user,
+      //StreamProvider listen to a Stream and wraps MaterialApp
+      //Anything inside (Wrapper) can access data provided from Stream
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         routes: {
           '/': (context) => Wrapper()
         },

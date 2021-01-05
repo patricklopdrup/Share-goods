@@ -21,19 +21,19 @@ class _ItemState extends State<Item> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        title: 'Varer',
+        title: 'Køkken L',
       ),
       //drawer: MyDrawer(),
       // Display list in body
       body: ItemList(),
-      floatingActionButton: MyActionButton(
+     /* floatingActionButton: MyActionButton(
         hej: () {
           setState(() {
             print('floating action');
             filteredInventory.removeAt(0);
           });
         },
-      ),
+      ),*/
     );
   }
 }
@@ -125,23 +125,26 @@ class _ItemListState extends State<ItemList> {
                       SizedBox(width: 20),
                       Expanded(
                         flex: 5,
-                        child: TextField(
-                          controller: _textController,
-                          focusNode: _focus,
-                          decoration: InputDecoration(
-                            hintText: 'Søg',
-                            suffixIcon: Icon(Icons.search, color: myDarkGreen),
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              fontSize: 18,
-                              color: myDarkGreen,
+                        child: Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: TextField(
+                            controller: _textController,
+                            focusNode: _focus,
+                            decoration: InputDecoration(
+                              hintText: '',
+                              suffixIcon: Icon(Icons.search, color: myDarkGreen),
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                fontSize: 18,
+                                color: myDarkGreen,
+                              ),
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                searchFunc(value);
+                              });
+                            },
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              searchFunc(value);
-                            });
-                          },
                         ),
                       ),
                     ],
@@ -171,28 +174,30 @@ class _ItemListState extends State<ItemList> {
         });
       },
       background: Container(
-        margin: EdgeInsets.fromLTRB(0, 12, 0, 7),
+        margin: EdgeInsets.fromLTRB(20, 12, 20, 7),
         child: Container(
-          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
           child: Row(
             children: [
               Icon(
                 Icons.add_shopping_cart,
                 color: Colors.white,
               ),
-              SizedBox(width: 20),
-              Text(
-                'Købt',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+              SizedBox(width: 250.0),
+              Align(
+                child: Text(
+                  'Købt',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
-              )
+                alignment: Alignment.centerRight ,
+              ),
             ],
           ),
         ),
         color: myDarkGreen,
-        alignment: Alignment.centerLeft,
       ),
       child: ItemField(
         displayText: need[indexInList],
