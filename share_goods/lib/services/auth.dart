@@ -14,9 +14,8 @@ class AuthService{
 
   // setup stream, so every time a user signs in / signs out we get a response, and map it to our user
   Stream<LocalUser> get user {
-    return _auth.authStateChanges()
+    return _auth.authStateChanges().map(_userFromFirebase);
     //.map((FirebaseUser user) => _userFromFirebase(user));
-    .map(_userFromFirebase);
   }
 
   // method to sign in with email & password
