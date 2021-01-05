@@ -222,6 +222,7 @@ class _SignInState extends State<SignIn> {
         ),
         child: RaisedButton(
             color: Colors.white,
+            highlightColor: myLightBlue4,
             elevation: 5.0,
             padding: EdgeInsets.all(15.0),
             child: Text(
