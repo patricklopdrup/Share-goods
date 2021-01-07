@@ -121,6 +121,7 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _buildUsernameTextField() {
+    final node = FocusScope.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -145,6 +146,8 @@ class _RegisterState extends State<Register> {
             ]
         ),
         child: TextFormField(
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
             keyboardType: TextInputType.name,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -174,6 +177,7 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _buildEmailTextField() {
+    final node = FocusScope.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -198,6 +202,8 @@ class _RegisterState extends State<Register> {
             ]
         ),
         child: TextFormField(
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -227,6 +233,7 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _buildPasswordTextField() {
+    final node = FocusScope.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Text(
         'Password',
@@ -249,6 +256,8 @@ class _RegisterState extends State<Register> {
             ]
         ),
         child: TextFormField(
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted: (_) => node.unfocus(),
             keyboardType: TextInputType.text,
             obscureText: true,
             style: TextStyle(color: Colors.white),
