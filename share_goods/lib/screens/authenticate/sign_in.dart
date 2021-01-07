@@ -31,6 +31,7 @@ class _SignInState extends State<SignIn> {
   TextStyle defaultStyle = TextStyle(color: Colors.white, fontSize: 10.0);
   TextStyle linkStyle = TextStyle(color: myLightGreen, fontSize: 12.0);
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,6 +94,7 @@ class _SignInState extends State<SignIn> {
   }
 
   Widget _buildEmailTextField() {
+    final node = FocusScope.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Text(
         'Email',
@@ -115,6 +117,8 @@ class _SignInState extends State<SignIn> {
             ]
         ),
         child: TextFormField(
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
@@ -144,6 +148,7 @@ class _SignInState extends State<SignIn> {
   }
 
   Widget _buildPasswordTextField() {
+    final node = FocusScope.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Text(
         'Password',
@@ -166,6 +171,8 @@ class _SignInState extends State<SignIn> {
             ]
         ),
         child: TextFormField(
+         textInputAction: TextInputAction.done,
+            onFieldSubmitted: (_) => node.unfocus(),
           keyboardType: TextInputType.text,
           obscureText: true,
           style: TextStyle(color: Colors.white),
