@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'myColors.dart';
 
 class MyActionButton extends StatelessWidget {
-  final Function hej;
+  final Function action;
 
-  MyActionButton({this.hej});
+  MyActionButton({this.action});
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: hej,
+      onPressed: action,
       child: Icon(Icons.add),
       backgroundColor: myDarkGreen,
     );

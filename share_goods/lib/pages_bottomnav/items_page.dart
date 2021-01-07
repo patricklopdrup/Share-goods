@@ -17,6 +17,32 @@ class Item extends StatefulWidget {
 }
 
 class _ItemState extends State<Item> {
+
+  Future<String> createAlertDialog(BuildContext context) {
+    TextEditingController myController = TextEditingController();
+
+    return showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text('Tilføj varer'),
+        content: TextField(
+          controller: myController,
+          textCapitalization: TextCapitalization.sentences,
+        ),
+        actions: [
+          MaterialButton(
+            elevation: 5.0,
+            child: Text('Tilføj'),
+            onPressed: () {
+              // Get value when 'add' is pressed
+              Navigator.of(context).pop(myController.text.toString());
+            },
+          )
+        ],
+      );
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +52,18 @@ class _ItemState extends State<Item> {
       //drawer: MyDrawer(),
       // Display list in body
       body: ItemList(),
-     /* floatingActionButton: MyActionButton(
-        hej: () {
-          setState(() {
+      floatingActionButton: MyActionButton(
+        action: () {
             print('floating action');
-            filteredInventory.removeAt(0);
+            createAlertDialog(context).then((value) {
+              // Updating state with new value in list
+              setState(() {
+                inventory.add(value);
+                print('tilføjet $value');
+              });
           });
         },
-      ),*/
+      ),
     );
   }
 }
@@ -132,7 +162,8 @@ class _ItemListState extends State<ItemList> {
                             focusNode: _focus,
                             decoration: InputDecoration(
                               hintText: '',
-                              suffixIcon: Icon(Icons.search, color: myDarkGreen),
+                              suffixIcon:
+                                  Icon(Icons.search, color: myDarkGreen),
                               border: InputBorder.none,
                               hintStyle: TextStyle(
                                 fontSize: 18,
@@ -192,7 +223,7 @@ class _ItemListState extends State<ItemList> {
                     fontSize: 18,
                   ),
                 ),
-                alignment: Alignment.centerRight ,
+                alignment: Alignment.centerRight,
               ),
             ],
           ),
