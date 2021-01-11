@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/pages_bottomnav/chat_page.dart';
+import 'package:share_goods/pages_bottomnav/choose_kitchen_page.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
 import 'package:share_goods/pages_bottomnav/profile_page.dart';
 import 'package:share_goods/myColors.dart';
