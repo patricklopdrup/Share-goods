@@ -10,6 +10,7 @@ import 'package:share_goods/myColors.dart';
 //import 'package:share_goods/screens/myDrawer.dart';
 import 'package:share_goods/data/testData.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Item extends StatefulWidget {
   @override
@@ -18,10 +19,20 @@ class Item extends StatefulWidget {
 
 class _ItemState extends State<Item> {
 
+  final databaseReference = FirebaseFirestore.instance;
+
+  List<String> hej = ["hej", "med", "dig"];
+
+  void createRecord() async {
+    await databaseReference.collection('shoppingList')
+        .doc('1')
+        .set({'list': hej});
+  }
+
   Future<String> createAlertDialog(BuildContext context) {
     TextEditingController myController = TextEditingController();
 
-    return showDialog(context: context, builder: (context) {
+    return showDialog(context: context, barrierDismissible: false, builder: (context) {
       return AlertDialog(
         title: Text('Tilføj varer'),
         content: TextField(
@@ -33,6 +44,7 @@ class _ItemState extends State<Item> {
             elevation: 5.0,
             child: Text('Tilføj'),
             onPressed: () {
+              createRecord();
               // Get value when 'add' is pressed
               Navigator.of(context).pop(myController.text.toString());
             },
