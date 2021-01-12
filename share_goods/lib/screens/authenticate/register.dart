@@ -158,7 +158,7 @@ class _RegisterState extends State<Register> {
                   Icons.account_circle,
                   color: Colors.white,
                 ),
-                hintText: 'Enter your Name',
+                hintText: 'Indtast navn',
                 hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans',)
             ),
             onTap: (){
@@ -214,7 +214,7 @@ class _RegisterState extends State<Register> {
                   Icons.email,
                   color: Colors.white,
                 ),
-                hintText: 'Enter your E-mail',
+                hintText: 'Indtast mail',
                 hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
             ),
             onTap: (){
@@ -236,7 +236,7 @@ class _RegisterState extends State<Register> {
     final node = FocusScope.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Text(
-        'Password',
+        'Kodeord',
         style: TextStyle(color: Colors.white),
       ),
       SizedBox(height: 10.0),
@@ -269,7 +269,7 @@ class _RegisterState extends State<Register> {
                   Icons.lock,
                   color: Colors.white,
                 ),
-                hintText: 'Enter your Password',
+                hintText: 'Indtast kodeord',
                 hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
             ),
             onTap: (){
@@ -300,7 +300,7 @@ class _RegisterState extends State<Register> {
             elevation: 5.0,
             padding: EdgeInsets.all(15.0),
             child: Text(
-              'REGISTER',
+              'Tilmeld',
               style: TextStyle(color: Color(0xFF527DAA), letterSpacing: 4.0, fontSize: 18.0, fontWeight: FontWeight.bold, fontFamily: 'OpenSans' ),
             ),
             onPressed: () async {

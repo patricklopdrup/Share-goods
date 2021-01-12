@@ -71,7 +71,7 @@ class _SignInState extends State<SignIn> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('Welcome to',style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.normal),),
+                          Text('Velkommen til ',style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 20.0, fontWeight: FontWeight.normal),),
                           Text('ShareGoods', style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 30.0, fontWeight: FontWeight.bold),),
                           SizedBox(height: 30.0),
                           _buildEmailTextField(),
@@ -98,7 +98,7 @@ class _SignInState extends State<SignIn> {
     final node = FocusScope.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Text(
-        'Email',
+        'Mail',
         style: TextStyle(color: Colors.white),
       ),
       SizedBox(height: 10.0),
@@ -130,7 +130,7 @@ class _SignInState extends State<SignIn> {
                 Icons.email,
                 color: Colors.white,
               ),
-              hintText: 'Enter your E-mail',
+              hintText: 'Indtast din mail',
               hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
           ),
           onTap: (){
@@ -152,7 +152,7 @@ class _SignInState extends State<SignIn> {
     final node = FocusScope.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       Text(
-        'Password',
+        'Kodeord',
         style: TextStyle(color: Colors.white),
       ),
       SizedBox(height: 10.0),
@@ -185,7 +185,7 @@ class _SignInState extends State<SignIn> {
                 Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Enter your Password',
+              hintText: 'Indtast kodeord',
               hintStyle: TextStyle(color: Colors.white, fontFamily: 'OpenSans')
           ),
             onTap: (){
@@ -219,7 +219,7 @@ class _SignInState extends State<SignIn> {
           },
           padding: EdgeInsets.only(right: 0.0),
           child: Text(
-            'Forgot Password?',
+            'Glemt kodeord?',
             style: TextStyle(color: Colors.white, fontFamily: 'OpenSans', fontSize: 12.0),
           ),
         )
