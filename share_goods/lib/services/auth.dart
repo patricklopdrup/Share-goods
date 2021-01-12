@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_goods/models/user.dart';
+import 'package:share_goods/screens/authenticate/forgotPassword.dart';
 
 class AuthService{
 
