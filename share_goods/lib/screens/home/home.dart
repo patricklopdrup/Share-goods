@@ -4,6 +4,7 @@ import 'package:share_goods/pages_bottomnav/chat_page.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
 import 'package:share_goods/pages_bottomnav/profile_page.dart';
 import 'package:share_goods/myColors.dart';
+import 'package:share_goods/screens/itemScreen/screen.dart';
 import 'package:share_goods/services/auth.dart';
 import 'dart:io' show Platform;
 
@@ -17,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 1;
 
   // Pages we move between via bottomnav
-  final pages = [Profile(), Item(), Chat()];
+  final pages = [Profile(), ItemScreen(), Chat()];
 
   @override
   Widget build(BuildContext context) {
