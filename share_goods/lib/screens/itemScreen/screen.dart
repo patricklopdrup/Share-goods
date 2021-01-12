@@ -35,7 +35,7 @@ class _ItemScreenState extends State<ItemScreen> {
         if (!snapshot.hasData) return LinearProgressIndicator();
 
         snapshot.data.docs.forEach((QueryDocumentSnapshot doc) => print(doc.id));
-        return LinearProgressIndicator()
+        return LinearProgressIndicator();
       },
     );
   }
