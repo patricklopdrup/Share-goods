@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:share_goods/myColors.dart';
+import 'package:share_goods/screens/authenticate/forgotPassword.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
 
@@ -209,7 +210,13 @@ class _SignInState extends State<SignIn> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          onPressed: () => print('Forgot pw Button Pressed'),
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ForgotPW()),
+            );
+            print('Forgot pw Button Pressed');
+          },
           padding: EdgeInsets.only(right: 0.0),
           child: Text(
             'Forgot Password?',
