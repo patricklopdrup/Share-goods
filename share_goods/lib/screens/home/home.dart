@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/pages_bottomnav/chat_page.dart';
 import 'package:share_goods/pages_bottomnav/choose_kitchen_page.dart';
+import 'package:share_goods/pages_bottomnav/createOrJoinKitchen_page.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
 import 'package:share_goods/pages_bottomnav/profile_page.dart';
 import 'package:share_goods/myColors.dart';
@@ -19,7 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 1;
 
   // Pages we move between via bottomnav
-  final pages = [Profile(), ItemScreen(), Chat()];
+  final pages = [Profile(), ChooseKitchen(), CreateJoin()];
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +48,26 @@ class _MyHomePageState extends State<MyHomePage> {
 final bottomNavItems = [
   profileBarItem(),
   shoppingCartBarItem(),
-  chatBarItem(),
+  createJoinBarItem(),
+  //chatBarItem(),
 ];
+
+BottomNavigationBarItem createJoinBarItem() {
+  IconData icon = Platform.isAndroid
+      ? Icons.add_circle_outline
+      : CupertinoIcons.add_circled;
+  return BottomNavigationBarItem(
+    label: 'Tilmeld/Opret',
+    icon: Icon(icon),
+  );
+}
 
 BottomNavigationBarItem profileBarItem() {
   IconData icon = Platform.isAndroid
       ? Icons.account_circle
       : CupertinoIcons.profile_circled;
   return BottomNavigationBarItem(
-    title: Text('Profil'),
+    label: 'Profil',
     icon: Icon(icon),
   );
 }
@@ -64,7 +76,7 @@ BottomNavigationBarItem shoppingCartBarItem() {
   IconData icon =
       Platform.isAndroid ? Icons.shopping_cart : CupertinoIcons.shopping_cart;
   return BottomNavigationBarItem(
-    title: Text('Varer'),
+    label: 'Varer',
     icon: Icon(icon),
   );
 }
@@ -74,7 +86,7 @@ BottomNavigationBarItem chatBarItem() {
       ? Icons.chat_bubble
       : CupertinoIcons.conversation_bubble;
   return BottomNavigationBarItem(
-    title: Text('Chat'),
+    label: 'Chat',
     icon: Icon(icon),
   );
 }
