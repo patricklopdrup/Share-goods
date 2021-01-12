@@ -164,7 +164,7 @@ class _RegisterState extends State<Register> {
             onTap: (){
               checkS = true;
             },
-            validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
+           // validator: (val) => !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? '' : null,
             onChanged: (val) {
               setState(() {
                 email = val;
@@ -320,6 +320,7 @@ class _RegisterState extends State<Register> {
         dynamic result = await _auth
             .registerWithEmailAndPassword(
             email.trim(), password.trim());
+
         print('Result is' + result.uid);
         if (result == null) {
           print('Result was null');
