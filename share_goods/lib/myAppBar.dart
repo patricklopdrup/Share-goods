@@ -31,13 +31,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: Colors.white10,
         elevation: 0,
         iconTheme: IconThemeData(
-          color: myDarkGreen,
+          color: myDarkGreen
         ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             createLogo(),
-            SizedBox(height: 20.0,),
+            SizedBox(height: 10.0,),
             Text(
               this.title,
               style: TextStyle(
