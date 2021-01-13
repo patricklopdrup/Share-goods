@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/data/testData.dart';
+import 'package:share_goods/models/kitchen.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
+import 'package:share_goods/pages_bottomnav/choose_kitchen_page.dart';
 
 class CreateKitchen extends StatefulWidget {
   final GlobalKey<_CreateKitchenState> key = new GlobalKey();
@@ -10,6 +12,35 @@ class CreateKitchen extends StatefulWidget {
 }
 
 class _CreateKitchenState extends State<CreateKitchen> {
+
+  Future<Kitchen> createConfirmDialog(BuildContext context){
+
+    return showDialog(context: context, barrierDismissible: false, builder: (context) {
+      return AlertDialog(
+        title: Text('Bekræft'),
+        content: Text('Du er ved at oprette ${myController.text.toString()}. Er du sikker?'),
+        actions: [
+          MaterialButton(
+            elevation: 5.0,
+            child: Text('OK'),
+            onPressed: () {
+              Kitchen myKitchen = Kitchen(navn, null, null);
+              Navigator.of(context).pop(myKitchen);
+
+             // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChooseKitchen()));
+            },
+          ),
+          MaterialButton(
+            elevation: 5.0,
+            child: Text('Annuller'),
+            onPressed: (){
+              Navigator.of(context).pop();
+            }),
+        ],
+      );
+    });
+  }
+
   String navn = "";
   TextEditingController myController = TextEditingController();
 
@@ -48,14 +79,19 @@ class _CreateKitchenState extends State<CreateKitchen> {
           child: Icon(Icons.arrow_forward, color: myDarkGreen,),
           onPressed: () {
             setState(() {
-              navn = myController.text;
-              print(navn);
+              createConfirmDialog(context).then((kitchen) {
+                // Routes to ChooseKitchen while removing the underlying stack so the back-button doesn't appear.   https://stackoverflow.com/questions/45889341/flutter-remove-all-routes
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ChooseKitchen()), (Route<dynamic> route) => route is ChooseKitchen);
+
+                // TODO: Gem køkken i database
+              });
             });
           },
         ),
       );
   }
 }
+
 
 class CreateKitchenList extends StatefulWidget {
   @override
