@@ -4,11 +4,19 @@ import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
 
 class CreateKitchen extends StatefulWidget {
+  final GlobalKey<_CreateKitchenState> key = new GlobalKey();
   @override
   _CreateKitchenState createState() => _CreateKitchenState();
 }
 
 class _CreateKitchenState extends State<CreateKitchen> {
+  String navn = "";
+  TextEditingController myController = TextEditingController();
+
+  getText() { // this is new
+    return myController.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +31,7 @@ class _CreateKitchenState extends State<CreateKitchen> {
              Expanded(
                flex: 2,
                  child: Container(
-                   child: _createNameField(),
+                   child: CreateNameField(myController: myController,),
                  )
              ),
              Expanded(
@@ -34,7 +42,17 @@ class _CreateKitchenState extends State<CreateKitchen> {
              ),
            ],
          )
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: Icon(Icons.arrow_forward, color: myDarkGreen,),
+          onPressed: () {
+            setState(() {
+              navn = myController.text;
+              print(navn);
+            });
+          },
+        ),
       );
   }
 }
@@ -60,7 +78,7 @@ class _CreateKitchenListState extends State<CreateKitchenList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 45),
+      padding: EdgeInsets.symmetric(horizontal: 0),
       child: ListView.builder(
             itemCount: _inventory.length,
             itemBuilder: (context,index){
@@ -101,15 +119,26 @@ class _CheckListItemState extends State<CheckListItem> {
   }
 }
 
-Widget _createNameField() {
-  return Container(
-      child: Column(
-        children: [
-          TextFormField(
+class CreateNameField extends StatefulWidget {
+
+  @override
+  _CreateNameFieldState createState() => _CreateNameFieldState();
+  final TextEditingController myController;
+  CreateNameField({this.myController});
+}
+
+class _CreateNameFieldState extends State<CreateNameField> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Column(
+      children: [
+        TextFormField(
+          controller: widget.myController,
             style: TextStyle(color: myDarkGreen),
             decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: myDarkGreen)
+                  borderSide: BorderSide(color: myDarkGreen)
               ),
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 15),
@@ -119,10 +148,11 @@ Widget _createNameField() {
               ),
               hintText: 'Navn på køkken',
               hintStyle:
-                  TextStyle(color: myDarkGreen, fontFamily: 'OpenSans'),
+              TextStyle(color: myDarkGreen, fontFamily: 'OpenSans'),
             )
-          ),
-        ],
-      ),
-  );
+        ),
+      ],
+    ),
+    );
+  }
 }
