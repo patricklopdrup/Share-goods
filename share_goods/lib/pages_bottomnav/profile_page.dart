@@ -29,19 +29,29 @@ class _ProfileState extends State<Profile> {
         appBar: MyAppBar(
           title: 'Profil',
         ),
-        body: Center(
+        body: Container(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ProfileInfo(Icons.account_circle, "Mit navnfkldsjf"),
               SizedBox(
                 height: sizedBoxHeight,
               ),
-              ProfileInfo(Icons.email, "rasmusstrangejoKodsfkjhfdslkjbsen@gmail.com"),
+              ProfileInfo(
+                  Icons.email, "rasmusstrangejoKodsfkjhfdslkjbsen@gmail.com"),
               SizedBox(
                 height: sizedBoxHeight,
               ),
-              ProfileInfo(Icons.lock_rounded, '********')
+              ProfileInfo(Icons.lock_rounded, '********'),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                    onPressed: () {
+                      _auth.signOut();
+                    },
+                    child:
+                        Text('Log ud', style: TextStyle(color: myLightGreen)),
+                    color: Colors.purple),
+              ),
             ],
           ),
         ));
@@ -61,11 +71,9 @@ class ProfileInfo extends StatelessWidget {
 
   ProfileInfo(this.icon, this.info);
 
-
-
   @override
   Widget build(BuildContext context) {
-    double hej = MediaQuery.of(context).size.width/20;
+    double hej = MediaQuery.of(context).size.width / 20;
     return Container(
       padding: EdgeInsets.fromLTRB(hej, 0, hej, 0),
       child: ListTile(
@@ -82,7 +90,6 @@ class ProfileInfo extends StatelessWidget {
     );
   }
 }
-
 
 Widget _profileInfo(IconData icon, String info) {
   return ListTile(
