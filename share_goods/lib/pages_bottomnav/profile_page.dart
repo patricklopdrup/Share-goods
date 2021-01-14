@@ -26,35 +26,91 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: MyAppBar(
           title: 'Profil',
         ),
-        body: Container(
-          child: Column(
-            children: [
-              ProfileInfo(Icons.account_circle, "Mit navnfkldsjf"),
-              SizedBox(
-                height: sizedBoxHeight,
-              ),
-              ProfileInfo(
-                  Icons.email, "rasmusstrangejoKodsfkjhfdslkjbsen@gmail.com"),
-              SizedBox(
-                height: sizedBoxHeight,
-              ),
-              ProfileInfo(Icons.lock_rounded, '********'),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: RaisedButton(
-                    onPressed: () {
-                      _auth.signOut();
-                    },
-                    child:
-                        Text('Log ud', style: TextStyle(color: myLightGreen)),
-                    color: Colors.purple),
-              ),
+        body: Stack(
+          children: <Widget>[
+            buildOpacityClipPath(context),
+            buildClipPath(context),
+            buildUserInfo(),
+          ],
+        ));
+  }
+
+  Widget buildClipPath(BuildContext context) {
+    return ClipPath(
+      clipper: ClippingClass(),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 3,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.centerRight,
+            stops: [0.1, 0.9],
+            colors: [
+              myGradientGreen1,
+              myGradientGreen2,
             ],
           ),
-        ));
+        ),
+      ),
+    );
+  }
+
+  Widget buildOpacityClipPath(BuildContext context) {
+    return Opacity(
+      opacity: 0.75,
+      child: ClipPath(
+        clipper: ClippingClass(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2.8,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.centerRight,
+              stops: [0.1, 0.9],
+              colors: [
+                myGradientGreen1,
+                myGradientGreen2,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildUserInfo() {
+    return Column(
+      children: [
+        SizedBox(height: 250),
+        ProfileInfo(Icons.account_circle, "Rasmus Strange Jakobsen"),
+        SizedBox(
+          height: sizedBoxHeight,
+        ),
+        ProfileInfo(Icons.email, "rasmusstrangejakobsen@gmail.com"),
+        SizedBox(
+          height: sizedBoxHeight,
+        ),
+        ProfileInfo(Icons.lock_rounded, '********'),
+        SizedBox(
+          height: 45.0,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: RaisedButton(
+              onPressed: () {
+                _auth.signOut();
+              },
+              child: Text('Log ud', style: TextStyle(color: Colors.white)),
+              color: Colors.grey),
+        ),
+      ],
+    );
   }
 
   @override
@@ -66,8 +122,8 @@ class _ProfileState extends State<Profile> {
 }
 
 class ProfileInfo extends StatelessWidget {
-  IconData icon;
-  String info;
+  final IconData icon;
+  final String info;
 
   ProfileInfo(this.icon, this.info);
 
@@ -78,11 +134,15 @@ class ProfileInfo extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(hej, 0, hej, 0),
       child: ListTile(
         leading: Container(
-          child: Icon(icon),
+          child: Icon(
+            icon,
+            color: myDarkGreen,
+          ),
         ),
         title: Container(
           child: Text(
             info,
+            style: TextStyle(letterSpacing: 2),
             textAlign: TextAlign.start,
           ),
         ),
@@ -91,17 +151,52 @@ class ProfileInfo extends StatelessWidget {
   }
 }
 
-Widget _profileInfo(IconData icon, String info) {
-  return ListTile(
-    leading: Container(
-      child: Icon(icon),
-    ),
-    title: Container(
-      width: double.infinity,
-      child: Text(
-        info,
-      ),
-    ),
-    tileColor: Colors.amber,
-  );
+class ClippingClass extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+    path.lineTo(
+      0,
+      size.height,
+    ); //start path with this if you are making at bottom
+
+    var firstStart = Offset(size.width / 5, size.height);
+    //fist point of quadratic bezier curve
+    var firstEnd = Offset(size.width / 2.25, size.height - 50.0);
+    //second point of quadratic bezier curve
+    path.quadraticBezierTo(
+      firstStart.dx,
+      firstStart.dy,
+      firstEnd.dx,
+      firstEnd.dy,
+    );
+
+    var secondStart = Offset(
+      size.width - (size.width / 3.24),
+      size.height - 105,
+    );
+    //third point of quadratic bezier curve
+    var secondEnd = Offset(size.width, size.height - 10);
+    //fourth point of quadratic bezier curve
+    path.quadraticBezierTo(
+      secondStart.dx,
+      secondStart.dy,
+      secondEnd.dx,
+      secondEnd.dy,
+    );
+
+    path.lineTo(
+      size.width,
+      0,
+    ); //end with this path if you are making wave at bottom
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+    // TODO: implement shouldReclip
+    throw UnimplementedError();
+  }
 }
