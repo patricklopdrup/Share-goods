@@ -35,6 +35,7 @@ dependencies:
   provider: ^4.3.2+3
   firebase_crashlytics: ^0.4.0
   listview_utils: ^0.2.7
+  loading_animations: ^2.1.0
 
 
 dev_dependencies:
