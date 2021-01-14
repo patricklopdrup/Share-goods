@@ -217,7 +217,7 @@ class _ItemScreenState extends State<ItemScreen> {
   Widget _buildListItem(
       BuildContext context, DocumentSnapshot data, bool shouldBuy) {
     final item = Item.fromSnapshot(data);
-    return ItemListItemWidget(item);
+    return ItemListItemWidget(item, widget.admin == widget.currUser);
   }
 
   Future<Map<String, Object>> createAlertDialog(BuildContext context) {

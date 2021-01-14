@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:share_goods/models/item.dart';
 
 class ItemListItemWidget extends StatelessWidget {
-  ItemListItemWidget(this.item);
+  ItemListItemWidget(this.item, this.isAdmin);
 
   final Item item;
+  final bool isAdmin;
 
   /// Initiate build from an [Item] object
   ///
@@ -140,15 +145,59 @@ class ItemListItemWidget extends StatelessWidget {
 
   /// Build a Card from items that are in the inventory
   Widget _buildInventoryCard(BuildContext context) {
+    return Container(
+      margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
+      child: isAdmin ? _buildAdminCard(context) : _buildNormalCard(context)
+    );
+  }
+
+  Widget _buildNormalCard(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
+      //margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
       color: Colors.red.withOpacity(0),
       child: Row(
         children: [
           _buildInventoryItemBanner(context),
           _buildInventoryNeedButton(context),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAdminCard(BuildContext context) {
+    return FocusedMenuHolder(
+      menuItems: [
+        FocusedMenuItem(
+          title: Text('Rediger'),
+          trailingIcon: Icon(Icons.edit),
+          onPressed: () {},
+        ),
+        FocusedMenuItem(
+            title: Text('Slet', style: TextStyle(color: Colors.redAccent),),
+            trailingIcon: Icon(Icons.delete, color: Colors.redAccent,),
+            onPressed: () {
+              Future.delayed(Duration(milliseconds: 350), () {
+                item.reference.delete();
+              });
+            }),
+      ],
+      menuWidth: MediaQuery.of(context).size.width * 0.50,
+      animateMenuItems: true,
+      duration: Duration(milliseconds: 100),
+      openWithTap: true,
+      blurSize: 3,
+      onPressed: () {},
+      child: Card(
+        elevation: 0,
+        //margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
+        color: Colors.red.withOpacity(0),
+        child: Row(
+          children: [
+            _buildInventoryItemBanner(context),
+            _buildInventoryNeedButton(context),
+          ],
+        ),
       ),
     );
   }
