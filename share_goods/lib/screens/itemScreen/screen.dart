@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/MyActionButton.dart';
@@ -15,6 +16,8 @@ const String kitchen = "kitchen-k";
 class ItemScreen extends StatefulWidget {
   final DocumentReference kitchenDoc;
   final String kitchenName;
+  String currUser;
+  String admin;
 
   ItemScreen({this.kitchenDoc, this.kitchenName});
 
@@ -24,6 +27,13 @@ class ItemScreen extends StatefulWidget {
 
 class _ItemScreenState extends State<ItemScreen> {
   bool _inventoryActive = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isAdmin();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +49,18 @@ class _ItemScreenState extends State<ItemScreen> {
               //title: kitchen['name'],
               title: widget.kitchenName,
             ),
-            floatingActionButton: MyActionButton(
+            floatingActionButton: widget.currUser == widget.admin ? MyActionButton(
               action: () {
+                print("hej");
+                isAdmin();
                 createAlertDialog(context).then((value) {
                   setState(() {
                     addItemToFirestore(value);
-                    print('tilføjet: $value');
+                    //print('tilføjet: $value');
                   });
                 });
               },
-            ),
+            ) : null,
             body: Column(children: [
               SizedBox(height: 20),
               _buildTitles(context),
@@ -61,6 +73,17 @@ class _ItemScreenState extends State<ItemScreen> {
       },
     );
 
+  }
+
+  Future<void> isAdmin() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String currUser = auth.currentUser.uid;
+    DocumentReference adminRef = widget.kitchenDoc;
+    var admin;
+    await adminRef.get().then((value) => admin = value.data()['admin']);
+    widget.currUser = currUser;
+    widget.admin = admin.id.toString();
+    print('admin er ${widget.admin} og user ${widget.currUser}');
   }
 
   /// Build the titles that appear above the shopping list
@@ -199,9 +222,8 @@ class _ItemScreenState extends State<ItemScreen> {
 
   Future<Map<String, Object>> createAlertDialog(BuildContext context) {
     TextEditingController myController = TextEditingController();
-
     return showDialog(
-        context: context, barrierDismissible: false, builder: (context) {
+        context: context, barrierDismissible: true, builder: (context) {
       return AlertDialog(
         title: Text('Tilføj varer'),
         content: TextField(
@@ -213,13 +235,18 @@ class _ItemScreenState extends State<ItemScreen> {
             elevation: 5.0,
             child: Text('Tilføj'),
             onPressed: () {
-              Map<String, Object> item = {
-                'name': myController.text.toString(),
-                'shouldBuy': !_inventoryActive,
-                'timesBought': 0
-              };
-              // Get value when 'add' is pressed
-              Navigator.of(context).pop(item);
+              // Check if the user typed anything
+              if (myController.text.toString().length > 0) {
+                Map<String, Object> item = {
+                  'name': myController.text.toString(),
+                  'shouldBuy': !_inventoryActive,
+                  'timesBought': 0
+                };
+                // Get value when 'add' is pressed
+                Navigator.of(context).pop(item);
+              } else {
+                Navigator.of(context).pop();
+              }
             },
           )
         ],
@@ -228,7 +255,7 @@ class _ItemScreenState extends State<ItemScreen> {
   }
 
   addItemToFirestore(Map<String, Object> item) async {
-    print(item.toString());
+    //print(item.toString());
     widget.kitchenDoc.collection('items').add(item);
   }
 }

@@ -18,6 +18,7 @@ class Wrapper extends StatelessWidget {
     if(user == null){
       return Authenticate();
     } else {
+      print("user i else er $user");
       return MyHomePage();
     }
   }
