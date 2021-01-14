@@ -202,10 +202,13 @@ class ItemListItemWidget extends StatelessWidget {
                 bottomRight: Radius.circular(10),
               ),
             ),
-            onTap: () => item.reference.update({
-              'shouldBuy': !item.shouldBuy,
-              'timesBought': item.timesBought + 1
-            }),
+            onTap: () {
+              Future.delayed(Duration(milliseconds: 150), () {
+                item.reference.update({
+                  'shouldBuy': !item.shouldBuy,
+                });
+              });
+            },
             child: Container(
               height: 45,
               width: 45,
