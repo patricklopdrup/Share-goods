@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:share_goods/MyActionButton.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
@@ -74,12 +75,9 @@ class KitchenCard extends StatelessWidget {
     return ListTile(
       onTap: () {
         Future<DocumentSnapshot> hej = ref.get();
-        hej.then((value) => Navigator.push(
-            context,
-            MySlideRoute(
-                page: ItemScreen(
-              kitchenDoc: value.reference,
-            ))));
+        hej.then((value) =>
+            Navigator.push(context, MySlideRoute(page: ItemScreen(kitchenDoc: value.reference, kitchenName: title,)))
+        );
       },
       leading: Icon(Icons.kitchen),
       title: Text(title),

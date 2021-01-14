@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:share_goods/MyActionButton.dart';
 import 'package:share_goods/models/item.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
@@ -13,8 +15,11 @@ const String kitchen = "kitchen-k";
 
 class ItemScreen extends StatefulWidget {
   final DocumentReference kitchenDoc;
+  final String kitchenName;
+  String currUser;
+  String admin;
 
-  ItemScreen({this.kitchenDoc});
+  ItemScreen({this.kitchenDoc, this.kitchenName});
 
   @override
   _ItemScreenState createState() => _ItemScreenState();
@@ -24,17 +29,38 @@ class _ItemScreenState extends State<ItemScreen> {
   bool _inventoryActive = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isAdmin();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: widget.kitchenDoc.get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final DocumentSnapshot ds = snapshot.data;
-          final Map<String, dynamic> kitchen = ds.data();
+          // måske slet, da vi sender over i constructor
+          // final DocumentSnapshot ds = snapshot.data;
+          // final Map<String, dynamic> kitchen = ds.data();
           return Scaffold(
             appBar: MyAppBar(
-              title: kitchen['name'],
+              //title: kitchen['name'],
+              title: widget.kitchenName,
             ),
+            floatingActionButton: widget.currUser == widget.admin ? MyActionButton(
+              action: () {
+                print("hej");
+                isAdmin();
+                createAlertDialog(context).then((value) {
+                  setState(() {
+                    addItemToFirestore(value);
+                    //print('tilføjet: $value');
+                  });
+                });
+              },
+            ) : null,
             body: Column(children: [
               SizedBox(height: 20),
               _buildTitles(context),
@@ -47,6 +73,17 @@ class _ItemScreenState extends State<ItemScreen> {
       },
     );
 
+  }
+
+  Future<void> isAdmin() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String currUser = auth.currentUser.uid;
+    DocumentReference adminRef = widget.kitchenDoc;
+    var admin;
+    await adminRef.get().then((value) => admin = value.data()['admin']);
+    widget.currUser = currUser;
+    widget.admin = admin.id.toString();
+    print('admin er ${widget.admin} og user ${widget.currUser}');
   }
 
   /// Build the titles that appear above the shopping list
@@ -181,5 +218,44 @@ class _ItemScreenState extends State<ItemScreen> {
       BuildContext context, DocumentSnapshot data, bool shouldBuy) {
     final item = Item.fromSnapshot(data);
     return ItemListItemWidget(item);
+  }
+
+  Future<Map<String, Object>> createAlertDialog(BuildContext context) {
+    TextEditingController myController = TextEditingController();
+    return showDialog(
+        context: context, barrierDismissible: true, builder: (context) {
+      return AlertDialog(
+        title: Text('Tilføj varer'),
+        content: TextField(
+          controller: myController,
+          textCapitalization: TextCapitalization.sentences,
+        ),
+        actions: [
+          MaterialButton(
+            elevation: 5.0,
+            child: Text('Tilføj'),
+            onPressed: () {
+              // Check if the user typed anything
+              if (myController.text.toString().length > 0) {
+                Map<String, Object> item = {
+                  'name': myController.text.toString(),
+                  'shouldBuy': !_inventoryActive,
+                  'timesBought': 0
+                };
+                // Get value when 'add' is pressed
+                Navigator.of(context).pop(item);
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          )
+        ],
+      );
+    });
+  }
+
+  addItemToFirestore(Map<String, Object> item) async {
+    //print(item.toString());
+    widget.kitchenDoc.collection('items').add(item);
   }
 }

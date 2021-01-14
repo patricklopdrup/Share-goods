@@ -13,14 +13,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  dynamic data;
-  String uid = user.uid;
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
-  Future<dynamic> getData() async {
-    final ref = db.collection('Users').doc(uid).get();
-  }
-
   double sizedBoxHeight = 20.0;
 
   @override
@@ -84,40 +76,60 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+  // Get the userInfo from firestore
+  dynamic getUserInfo() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    DocumentReference ref = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(auth.currentUser.uid);
+    DocumentSnapshot userInfo = await ref.get();
+    var data = userInfo.data();
+    return data;
+  }
+
+  // Build the profile page from firestore data.
   Widget buildUserInfo() {
-    return Column(
-      children: [
-        SizedBox(height: MediaQuery.of(context).size.height / 2.8 + 10),
-        ProfileInfo(Icons.account_circle, "Rasmus Strange Jakobsen"),
-        SizedBox(
-          height: sizedBoxHeight,
-        ),
-        ProfileInfo(Icons.email, "rasmusstrangejakobsen@gmail.com"),
-        SizedBox(
-          height: sizedBoxHeight,
-        ),
-        ProfileInfo(Icons.lock_rounded, '********'),
-        SizedBox(
-          height: 45.0,
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: RaisedButton(
-              onPressed: () {
-                _auth.signOut();
-              },
-              child: Text('Log ud', style: TextStyle(color: Colors.white)),
-              color: Colors.grey),
-        ),
-      ],
-    );
+    return FutureBuilder(
+      future: getUserInfo(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          Map<String, dynamic> userInfo = snapshot.data;
+          return Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height / 2.8 + 10),
+              ProfileInfo(Icons.account_circle, userInfo['name']),
+              SizedBox(
+                height: sizedBoxHeight,
+              ),
+              ProfileInfo(Icons.email, userInfo['e-mail']),
+              SizedBox(
+                height: sizedBoxHeight,
+              ),
+              ProfileInfo(Icons.lock_rounded, '********'),
+              SizedBox(
+                height: 45.0,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                    onPressed: () {
+                      _auth.signOut();
+                    },
+                    child: Text('Log ud', style: TextStyle(color: Colors.white)),
+                    color: Colors.grey),
+              ),
+            ],
+          );
+        } else {
+          return SizedBox(height: 50,);
+        }
+      });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    data = getData().then((value) => print("hej " + data.toString()));
   }
 }
 
