@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:share_goods/MyActionButton.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
 import 'package:share_goods/pages_bottomnav/items_page.dart';
@@ -55,6 +56,7 @@ class _KitchenListState extends State<KitchenList> {
               child: ListView.builder(
                   itemCount: kitchens.length,
                   itemBuilder: (context, index) {
+                    print('name: ${kitchens[index]['name']} og køkken: ${kitchens[index]['kitchen']}');
                     return KitchenCard(title: kitchens[index]['name'], ref: kitchens[index]['kitchen']);
                   }),
             );
@@ -79,7 +81,7 @@ class KitchenCard extends StatelessWidget {
       onTap: () {
         Future<DocumentSnapshot> hej = ref.get();
         hej.then((value) =>
-            Navigator.push(context, MySlideRoute(page: ItemScreen(kitchenDoc: value.reference,)))
+            Navigator.push(context, MySlideRoute(page: ItemScreen(kitchenDoc: value.reference, kitchenName: title,)))
         );
       },
       leading: Icon(Icons.kitchen),
