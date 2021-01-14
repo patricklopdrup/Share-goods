@@ -10,7 +10,7 @@ import 'package:share_goods/screens/home/home.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-   // Specify we need user from Stream//accessing user data from Provider in main.dart
+   // Specify we need user from Stream//accessing user data from Provider in screen.dart
     final user = Provider.of<LocalUser>(context);
     print(user);
     //return either Home or Authenticate based on if user is signed in or not.
