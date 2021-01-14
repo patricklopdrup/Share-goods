@@ -1,24 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:share_goods/MyActionButton.dart';
-import 'package:share_goods/myAppBar.dart';
-import 'package:share_goods/myColors.dart';
-import 'package:share_goods/pages_bottomnav/items_page.dart';
-import 'package:share_goods/screens/itemScreen/screen.dart';
+import 'package:share_goods/screens/shoppinglist_screen.dart';
+import 'package:share_goods/widgets/app_bar.dart';
+import 'package:share_goods/widgets/route_slide_animation.dart';
 
-import '../mySlideAnimation.dart';
 
-class ChooseKitchen extends StatefulWidget {
+class KitchenOverview extends StatefulWidget {
   @override
-  _ChooseKitchenState createState() => _ChooseKitchenState();
+  _KitchenOverviewState createState() => _KitchenOverviewState();
 }
 
-class _ChooseKitchenState extends State<ChooseKitchen> {
+class _KitchenOverviewState extends State<KitchenOverview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'Mine Køkkener'),
+      appBar: CustomAppBar(title: 'Mine Køkkener'),
       body: _buildFuture(context),
     );
   }
@@ -76,7 +73,7 @@ class KitchenCard extends StatelessWidget {
       onTap: () {
         Future<DocumentSnapshot> hej = ref.get();
         hej.then((value) =>
-            Navigator.push(context, MySlideRoute(page: ItemScreen(kitchenDoc: value.reference, kitchenName: title,)))
+            Navigator.push(context, SlidingPageChange(page: ShoppingList(kitchenDoc: value.reference, kitchenName: title,)))
         );
       },
       leading: Icon(Icons.kitchen),

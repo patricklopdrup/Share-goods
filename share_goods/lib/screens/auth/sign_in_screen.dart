@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:share_goods/myColors.dart';
-import 'package:share_goods/screens/authenticate/forgotPassword.dart';
+import 'package:share_goods/screens/auth/forgot_password_screen.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
+import 'package:share_goods/utils/Colors.dart';
 
 class SignIn extends StatefulWidget {
   final Function togglePage;

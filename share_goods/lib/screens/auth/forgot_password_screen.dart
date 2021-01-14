@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../myColors.dart';
+import 'package:share_goods/utils/Colors.dart';
 
 class ForgotPW extends StatefulWidget {
   @override

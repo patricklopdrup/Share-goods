@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:share_goods/myAppBar.dart';
-import 'package:share_goods/myColors.dart';
+import 'package:share_goods/utils/Colors.dart';
+import 'package:share_goods/widgets/app_bar.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final User user = _auth.currentUser;
@@ -19,7 +19,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: MyAppBar(
+        appBar: CustomAppBar(
           title: 'Profil',
         ),
         body: Stack(
@@ -209,6 +209,5 @@ class ClippingClass extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
     // TODO: implement shouldReclip
-    throw UnimplementedError();
   }
 }

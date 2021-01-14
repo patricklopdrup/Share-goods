@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:share_goods/myColors.dart';
 import 'package:flutter/foundation.dart';
-import 'package:share_goods/services/auth.dart';
+import 'package:share_goods/utils/Colors.dart';
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-
-
-  final AuthService _auth = AuthService();
-
   final GlobalKey _textKey = new GlobalKey();
-  TextStyle defaultStyle = TextStyle(
+  final TextStyle defaultStyle = TextStyle(
       color: myDarkGreen,
       fontSize: 20.0,
       fontFamily: 'OpenSans',
@@ -19,8 +14,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   );
 
   // Title is required and icon is default the account_circle icon
-  MyAppBar(
-      {@required this.title});
+  CustomAppBar({@required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +40,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 fontSize: 36,
               ),
             ),
-            /*IconButton(
-              icon: this.icon,
-              color: myDarkGreen,
-              onPressed: () async {
-                await _auth.signOut();
-              },
-              iconSize: 36,
-            )*/
           ],
         ),
       ),

@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:share_goods/myAppBar.dart';
-import 'package:share_goods/myColors.dart';
-import 'package:share_goods/mySlideAnimation.dart';
-import 'package:share_goods/pages_bottomnav/createKitchen_page.dart';
+import 'package:share_goods/screens/create_kitchen_screen.dart';
+import 'package:share_goods/utils/Colors.dart';
+import 'package:share_goods/widgets/app_bar.dart';
+import 'package:share_goods/widgets/route_slide_animation.dart';
 
 
 
-class CreateJoin extends StatefulWidget {
+class CreateJoinKitchen extends StatefulWidget {
+  final Function selectTabFunc;
+  CreateJoinKitchen({this.selectTabFunc});
+
   @override
-  _CreateJoinState createState() => _CreateJoinState();
+  _CreateJoinKitchenState createState() => _CreateJoinKitchenState();
 }
 
-class _CreateJoinState extends State<CreateJoin> {
+class _CreateJoinKitchenState extends State<CreateJoinKitchen> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(
+        appBar: CustomAppBar(
             title: 'Kom i gang!'
         ),
         body: Container(
@@ -42,7 +45,7 @@ class _CreateJoinState extends State<CreateJoin> {
         RaisedButton(
           onPressed: () {
             Navigator.push(context,
-                MySlideRoute(page: CreateKitchen())
+                SlidingPageChange(page: CreateKitchen(selectTabFunc: widget.selectTabFunc,))
             );
           },
           color: myLightGreen,

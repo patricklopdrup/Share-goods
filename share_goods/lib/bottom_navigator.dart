@@ -2,21 +2,17 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share_goods/pages_bottomnav/choose_kitchen_page.dart';
-import 'package:share_goods/pages_bottomnav/createOrJoinKitchen_page.dart';
-import 'package:share_goods/pages_bottomnav/profile_page.dart';
-import 'package:share_goods/tab_nav.dart';
+import 'package:share_goods/tab_navigator.dart';
+import 'package:share_goods/utils/Colors.dart';
 import 'dart:io' show Platform;
 
-import 'main.dart';
-import 'myColors.dart';
+GlobalKey globalKey = new GlobalKey(debugLabel: 'btm_app_bar');
 
-class App extends StatefulWidget {
+class BottomNavigator extends StatefulWidget {
   @override
-  AppState createState() => AppState();
+  BottomNavigatorState createState() => BottomNavigatorState();
 }
-
-class AppState extends State<App> {
+class BottomNavigatorState extends State<BottomNavigator> {
   String _currentPage = "Kitchen";
   List<String> pageKeys = ["Profile", "Kitchen", "Join/Create"];
   Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
@@ -60,6 +56,7 @@ class AppState extends State<App> {
           _buildOffstageNavigator("Join/Create"),
         ]),
         bottomNavigationBar: BottomNavigationBar(
+          key: globalKey,
           backgroundColor: myLightGreen,
           selectedItemColor: myDarkGreen,
           unselectedItemColor: Colors.white,
@@ -88,6 +85,7 @@ class AppState extends State<App> {
       child: TabNavigator(
         navigatorKey: _navigatorKeys[tabItem],
         tabItem: tabItem,
+        selectTabFunc: _selectTab,
       ),
     );
   }

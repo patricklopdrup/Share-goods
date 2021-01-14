@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
-import '../../myColors.dart';
+import 'package:share_goods/utils/Colors.dart';
 
 
 class Register extends StatefulWidget {

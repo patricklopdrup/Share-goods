@@ -4,28 +4,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share_goods/MyActionButton.dart';
 import 'package:share_goods/models/item.dart';
-import 'package:share_goods/myAppBar.dart';
-import 'package:share_goods/myColors.dart';
-import 'package:share_goods/screens/itemScreen/widgets/listItem.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:share_goods/screens/widgets/shopping_list_item.dart';
+import 'package:share_goods/utils/Colors.dart';
+import 'package:share_goods/widgets/action_button.dart';
+import 'package:share_goods/widgets/app_bar.dart';
 
 const String kitchen = "kitchen-k";
 
-class ItemScreen extends StatefulWidget {
+class ShoppingList extends StatefulWidget {
   final DocumentReference kitchenDoc;
   final String kitchenName;
   String currUser;
   String admin;
 
-  ItemScreen({this.kitchenDoc, this.kitchenName});
+  ShoppingList({this.kitchenDoc, this.kitchenName});
 
   @override
-  _ItemScreenState createState() => _ItemScreenState();
+  _ShoppingListState createState() => _ShoppingListState();
 }
 
-class _ItemScreenState extends State<ItemScreen> {
+class _ShoppingListState extends State<ShoppingList> {
   bool _inventoryActive = false;
 
   @override
@@ -45,22 +45,24 @@ class _ItemScreenState extends State<ItemScreen> {
           // final DocumentSnapshot ds = snapshot.data;
           // final Map<String, dynamic> kitchen = ds.data();
           return Scaffold(
-            appBar: MyAppBar(
+            appBar: CustomAppBar(
               //title: kitchen['name'],
               title: widget.kitchenName,
             ),
-            floatingActionButton: widget.currUser == widget.admin ? MyActionButton(
-              action: () {
-                print("hej");
-                isAdmin();
-                createAlertDialog(context).then((value) {
-                  setState(() {
-                    addItemToFirestore(value);
-                    //print('tilføjet: $value');
-                  });
-                });
-              },
-            ) : null,
+            floatingActionButton: widget.currUser == widget.admin
+                ? ActionButton(
+                    action: () {
+                      print("hej");
+                      isAdmin();
+                      createAlertDialog(context).then((value) {
+                        setState(() {
+                          addItemToFirestore(value);
+                          //print('tilføjet: $value');
+                        });
+                      });
+                    },
+                  )
+                : null,
             body: Column(children: [
               SizedBox(height: 20),
               _buildTitles(context),
@@ -69,10 +71,11 @@ class _ItemScreenState extends State<ItemScreen> {
             ]),
           );
         }
-        return SizedBox(height: 100,);
+        return SizedBox(
+          height: 100,
+        );
       },
     );
-
   }
 
   Future<void> isAdmin() async {
@@ -187,7 +190,8 @@ class _ItemScreenState extends State<ItemScreen> {
   /// receiving new live data from the fireStore database
   Widget _buildPageViewBody(BuildContext context, bool shouldBuy) {
     return StreamBuilder<QuerySnapshot>(
-      stream: widget.kitchenDoc.collection('items')
+      stream: widget.kitchenDoc
+          .collection('items')
           .orderBy('name')
           .where('shouldBuy', isEqualTo: shouldBuy)
           .snapshots(),
@@ -206,6 +210,7 @@ class _ItemScreenState extends State<ItemScreen> {
       isAlwaysShown: true,
       controller: _scrollController,
       child: ListView(
+          padding: EdgeInsets.only(bottom: 100),
           controller: _scrollController,
           children: snapshot
               .map((data) => _buildListItem(context, data, shouldBuy))
@@ -223,35 +228,37 @@ class _ItemScreenState extends State<ItemScreen> {
   Future<Map<String, Object>> createAlertDialog(BuildContext context) {
     TextEditingController myController = TextEditingController();
     return showDialog(
-        context: context, barrierDismissible: true, builder: (context) {
-      return AlertDialog(
-        title: Text('Tilføj varer'),
-        content: TextField(
-          controller: myController,
-          textCapitalization: TextCapitalization.sentences,
-        ),
-        actions: [
-          MaterialButton(
-            elevation: 5.0,
-            child: Text('Tilføj'),
-            onPressed: () {
-              // Check if the user typed anything
-              if (myController.text.toString().length > 0) {
-                Map<String, Object> item = {
-                  'name': myController.text.toString(),
-                  'shouldBuy': !_inventoryActive,
-                  'timesBought': 0
-                };
-                // Get value when 'add' is pressed
-                Navigator.of(context).pop(item);
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-          )
-        ],
-      );
-    });
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Tilføj varer'),
+            content: TextField(
+              controller: myController,
+              textCapitalization: TextCapitalization.sentences,
+            ),
+            actions: [
+              MaterialButton(
+                elevation: 5.0,
+                child: Text('Tilføj'),
+                onPressed: () {
+                  // Check if the user typed anything
+                  if (myController.text.toString().length > 0) {
+                    Map<String, Object> item = {
+                      'name': myController.text.toString(),
+                      'shouldBuy': !_inventoryActive,
+                      'timesBought': 0
+                    };
+                    // Get value when 'add' is pressed
+                    Navigator.of(context).pop(item);
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+              )
+            ],
+          );
+        });
   }
 
   addItemToFirestore(Map<String, Object> item) async {

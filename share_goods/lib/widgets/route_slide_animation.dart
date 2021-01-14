@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MySlideRoute extends PageRouteBuilder {
+class SlidingPageChange extends PageRouteBuilder {
   final Widget page;
-  MySlideRoute({this.page})
+  SlidingPageChange({this.page})
       : super(
     pageBuilder: (
         BuildContext context,
