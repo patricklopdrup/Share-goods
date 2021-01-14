@@ -87,7 +87,7 @@ class _ProfileState extends State<Profile> {
   Widget buildUserInfo() {
     return Column(
       children: [
-        SizedBox(height: 250),
+        SizedBox(height: MediaQuery.of(context).size.height / 2.8 + 10),
         ProfileInfo(Icons.account_circle, "Rasmus Strange Jakobsen"),
         SizedBox(
           height: sizedBoxHeight,
