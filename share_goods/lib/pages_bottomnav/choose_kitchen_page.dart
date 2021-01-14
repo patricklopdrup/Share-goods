@@ -18,52 +18,48 @@ class _ChooseKitchenState extends State<ChooseKitchen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(title: 'Mine Køkkener'),
-      body: KitchenList(),
+      body: _buildFuture(context),
     );
   }
-}
 
-class KitchenList extends StatefulWidget {
-  @override
-  _KitchenListState createState() => _KitchenListState();
-}
+  Future _getKitchens() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
 
-getKitchens() async {
-  FirebaseAuth auth = FirebaseAuth.instance;
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(auth.currentUser.uid)
+        .collection('kitchens');
 
-  CollectionReference ref = FirebaseFirestore.instance
-      .collection('Users')
-      .doc(auth.currentUser.uid)
-      .collection('kitchens');
+    QuerySnapshot userKitchens = await ref.get();
+    List<Map<String, Object>> kitchens = [];
+    userKitchens.docs.forEach((data) {
+      kitchens.add({'name': data.get('name'), 'kitchen': data.get('kitchen')});
+    });
+    return kitchens;
+  }
 
-  QuerySnapshot userKitchens = await ref.get();
-  List<Map<String, Object>> kitchens = [];
-  userKitchens.docs.forEach((data) {
-    kitchens.add({'name': data.get('name'), 'kitchen': data.get('kitchen')});
-  });
-  return kitchens;
-}
 
-class _KitchenListState extends State<KitchenList> {
-  @override
-  Widget build(BuildContext context) => FutureBuilder(
-        future: getKitchens(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<Map<String, Object>> kitchens = snapshot.data;
-            return Container(
-              child: ListView.builder(
-                  itemCount: kitchens.length,
-                  itemBuilder: (context, index) {
-                    return KitchenCard(title: kitchens[index]['name'], ref: kitchens[index]['kitchen']);
-                  }),
-            );
-          }
-          return SizedBox(
-            height: 100,
+  Widget _buildFuture(BuildContext context) {
+    return FutureBuilder(
+      future: _getKitchens(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Map<String, Object>> kitchens = snapshot.data;
+          return Container(
+            child: ListView.builder(
+                itemCount: kitchens.length,
+                itemBuilder: (context, index) {
+                  return KitchenCard(title: kitchens[index]['name'], ref: kitchens[index]['kitchen'],);
+                }),
           );
-        },
-      );
+        }
+        return Align(
+          alignment: Alignment.center,
+          child:  CircularProgressIndicator(),
+        );
+      },
+    );
+  }
 }
 
 // Single card for a kitchen
@@ -78,9 +74,12 @@ class KitchenCard extends StatelessWidget {
     return ListTile(
       onTap: () {
         Future<DocumentSnapshot> hej = ref.get();
-        hej.then((value) =>
-            Navigator.push(context, MySlideRoute(page: ItemScreen(kitchenDoc: value.reference,)))
-        );
+        hej.then((value) => Navigator.push(
+            context,
+            MySlideRoute(
+                page: ItemScreen(
+              kitchenDoc: value.reference,
+            ))));
       },
       leading: Icon(Icons.kitchen),
       title: Text(title),
