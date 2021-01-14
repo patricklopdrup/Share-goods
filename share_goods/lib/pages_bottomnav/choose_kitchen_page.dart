@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/myAppBar.dart';
 import 'package:share_goods/myColors.dart';
+import 'package:share_goods/pages_bottomnav/items_page.dart';
+import 'package:share_goods/screens/itemScreen/screen.dart';
+
+import '../mySlideAnimation.dart';
 
 class ChooseKitchen extends StatefulWidget {
   @override
@@ -51,7 +55,7 @@ class _KitchenListState extends State<KitchenList> {
               child: ListView.builder(
                   itemCount: kitchens.length,
                   itemBuilder: (context, index) {
-                    return KitchenCard(title: kitchens[index]['name']);
+                    return KitchenCard(title: kitchens[index]['name'], ref: kitchens[index]['kitchen']);
                   }),
             );
           }
@@ -65,13 +69,19 @@ class _KitchenListState extends State<KitchenList> {
 // Single card for a kitchen
 class KitchenCard extends StatelessWidget {
   final String title;
+  final DocumentReference ref;
 
-  KitchenCard({this.title});
+  KitchenCard({this.title, this.ref});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () {
+        Future<DocumentSnapshot> hej = ref.get();
+        hej.then((value) =>
+            Navigator.push(context, MySlideRoute(page: ItemScreen(kitchenDoc: value.reference,)))
+        );
+      },
       leading: Icon(Icons.kitchen),
       title: Text(title),
       trailing: Icon(Icons.arrow_forward),

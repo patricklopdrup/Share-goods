@@ -12,6 +12,10 @@ import 'package:loading_animations/loading_animations.dart';
 const String kitchen = "kitchen-k";
 
 class ItemScreen extends StatefulWidget {
+  final DocumentReference kitchenDoc;
+
+  ItemScreen({this.kitchenDoc});
+
   @override
   _ItemScreenState createState() => _ItemScreenState();
 }
@@ -21,17 +25,28 @@ class _ItemScreenState extends State<ItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: "Køkken L",
-      ),
-      body: Column(children: [
-        SizedBox(height: 20),
-        _buildTitles(context),
-        SizedBox(height: 15),
-        _buildPageView(context),
-      ]),
+    return FutureBuilder(
+      future: widget.kitchenDoc.get(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final DocumentSnapshot ds = snapshot.data;
+          final Map<String, dynamic> kitchen = ds.data();
+          return Scaffold(
+            appBar: MyAppBar(
+              title: kitchen['name'],
+            ),
+            body: Column(children: [
+              SizedBox(height: 20),
+              _buildTitles(context),
+              SizedBox(height: 15),
+              _buildPageView(context),
+            ]),
+          );
+        }
+        return SizedBox(height: 100,);
+      },
     );
+
   }
 
   /// Build the titles that appear above the shopping list
@@ -95,7 +110,6 @@ class _ItemScreenState extends State<ItemScreen> {
     );
   }
 
-
   PageController pageController = PageController(
     initialPage: 0,
     keepPage: true,
@@ -113,7 +127,6 @@ class _ItemScreenState extends State<ItemScreen> {
     pageController.animateToPage(index,
         duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
-
 
   /// Build the pageView that contains the "Need" and "Inventory" list
   ///
@@ -137,10 +150,7 @@ class _ItemScreenState extends State<ItemScreen> {
   /// receiving new live data from the fireStore database
   Widget _buildPageViewBody(BuildContext context, bool shouldBuy) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('shoppingList')
-          .doc(kitchen)
-          .collection('items')
+      stream: widget.kitchenDoc.collection('items')
           .orderBy('name')
           .where('shouldBuy', isEqualTo: shouldBuy)
           .snapshots(),
