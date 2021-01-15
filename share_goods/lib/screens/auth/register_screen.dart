@@ -67,7 +67,7 @@ class _RegisterState extends State<Register> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'Register to',
+                              'Tilmeld dig',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'OpenSans',
@@ -117,7 +117,7 @@ class _RegisterState extends State<Register> {
                             widget.togglePage();
                           },
                           child: Text(
-                            'Sign in',
+                            'Log ind',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'OpenSans',
@@ -157,7 +157,7 @@ class _RegisterState extends State<Register> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Name',
+          'Navn',
           style: TextStyle(color: Colors.white),
         ),
         SizedBox(height: 10.0),
@@ -213,7 +213,7 @@ class _RegisterState extends State<Register> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Email',
+          'Mail',
           style: TextStyle(color: Colors.white),
         ),
         SizedBox(height: 10.0),

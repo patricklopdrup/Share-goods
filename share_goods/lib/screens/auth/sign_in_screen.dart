@@ -293,14 +293,14 @@ class _SignInState extends State<SignIn> {
         key: _textKey,
         text: TextSpan(children: <TextSpan>[
           TextSpan(
-              text: 'No account? ',
+              text: 'Ingen konto? ',
               style: defaultStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   print('Clicked No Account');
                 }),
           TextSpan(
-            text: 'Register',
+            text: 'Tilmeld',
             style: linkStyle,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
