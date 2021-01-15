@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:share_goods/models/kitchen.dart';
 import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/app_bar.dart';
+import 'package:share_goods/widgets/create_kitchen_alert_dialog.dart';
 
 TextEditingController _myController = TextEditingController();
 
@@ -35,68 +36,6 @@ class CreateKitchen extends StatefulWidget {
 
 class _CreateKitchenState extends State<CreateKitchen> {
   FirebaseAuth auth = FirebaseAuth.instance;
-
-  Future<Kitchen> createConfirmDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Bekræft'),
-            content: RichText(
-              text: _myController.text.length > 0
-                ? TextSpan(
-                text: 'Du er ved at oprette ',
-                style: TextStyle(color: Colors.black),
-                children: [
-                  TextSpan(
-                    text: "'${_myController.text.toString()}'",
-                    style: TextStyle(color: myGradientGreen2, fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(text: '. Er du sikker?')
-                ]
-              )
-              : TextSpan(text: 'Du skal give køkkenet et navn.', style: TextStyle(color: Colors.black)),
-            ),
-            actions: [
-              MaterialButton(
-                elevation: 5.0,
-                child: Text('Annuller'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              // Only show OK button if kitchen name has text
-              _myController.text.length > 0
-                  ? MaterialButton(
-                      elevation: 5.0,
-                      child: Text('OK'),
-                      onPressed: () {
-                        List<Map<String, Object>> items = [];
-                        _defaultItems.forEach((k, v) {
-                          if (v) {
-                            items.add({
-                              'name': k,
-                              'shouldBuy': false,
-                              'timesBought': 0,
-                            });
-                          }
-                        });
-                        Kitchen myKitchen = Kitchen(
-                            name: _myController.text.toString(),
-                            admin: dbref
-                                .collection('Users')
-                                .doc(auth.currentUser.uid),
-                            items: items);
-
-                        Navigator.of(context).pop(myKitchen);
-                      },
-                    )
-                  : null,
-            ],
-          );
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +73,7 @@ class _CreateKitchenState extends State<CreateKitchen> {
         ),
         onPressed: () {
           setState(() {
-            createConfirmDialog(context).then((kitchen) {
+            createConfirmDialog(context, _myController, _defaultItems, auth).then((kitchen) {
               // If cancel is pressed just close the dialog otherwise go to MyHomePage
               if (kitchen != null) {
                 print("HEEEEJ HEEEEEEEJ" + kitchen.name);
@@ -230,8 +169,8 @@ class _CreateNameFieldState extends State<CreateNameField> {
               controller: widget.myController,
               style: TextStyle(color: myDarkGreen),
               decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: myDarkGreen)),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: myDarkGreen)),
+                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: myDarkGreen)),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 15),
                 prefixIcon: Icon(

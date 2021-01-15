@@ -11,6 +11,7 @@ Future<Map<String, Object>> createAlertDialog(BuildContext context, bool shouldB
           content: TextField(
             controller: myController,
             textCapitalization: TextCapitalization.sentences,
+            autofocus: true,
           ),
           actions: [
             // Cancel button
