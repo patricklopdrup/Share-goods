@@ -21,7 +21,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         toolbarHeight: 100.0,
         centerTitle: true,
-
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(
