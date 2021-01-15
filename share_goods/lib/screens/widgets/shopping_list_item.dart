@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:share_goods/models/item.dart';
+import 'package:share_goods/widgets/shoppinglist_item_alertdialog.dart';
 
 class ItemListItemWidget extends StatelessWidget {
   ItemListItemWidget(this.item, this.isAdmin);
@@ -169,14 +170,31 @@ class ItemListItemWidget extends StatelessWidget {
         FocusedMenuItem(
           title: Text('Rediger'),
           trailingIcon: Icon(Icons.edit),
-          onPressed: () {},
+          onPressed: () {
+            editAlertdialog(context, item).then((value) {
+              // Function returns null if dismissed. Need to check
+              if (value != null) {
+                Future.delayed(Duration(milliseconds: 350), () {
+                  item.reference.update({'name': value});
+                });
+              }
+            });
+          },
         ),
         FocusedMenuItem(
             title: Text('Slet', style: TextStyle(color: Colors.redAccent),),
             trailingIcon: Icon(Icons.delete, color: Colors.redAccent,),
             onPressed: () {
-              Future.delayed(Duration(milliseconds: 350), () {
-                item.reference.delete();
+              // Delete item if OK button is pressed / if true is returned
+              Future.delayed(Duration(milliseconds: 200), () {
+                deleteDialog(context, item).then((value) {
+                  // Function returns null if dismissed. Need to check
+                  if (value != null && value) {
+                    Future.delayed(Duration(milliseconds: 350), () {
+                      item.reference.delete();
+                    });
+                  }
+                });
               });
             }),
       ],

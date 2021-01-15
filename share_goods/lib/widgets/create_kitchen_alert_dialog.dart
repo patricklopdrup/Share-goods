@@ -15,7 +15,10 @@ Future<Kitchen> createConfirmDialog(BuildContext context, TextEditingController 
             text: controller.text.length > 0
                 ? TextSpan(
                 text: 'Du er ved at oprette ',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16
+                ),
                 children: [
                   TextSpan(
                     text: "'${controller.text.toString()}'",
