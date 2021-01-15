@@ -36,7 +36,7 @@ class _ProfileState extends State<Profile> {
       clipper: ClippingClass(),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 3,
+        height: MediaQuery.of(context).size.height / 3.6,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -59,7 +59,7 @@ class _ProfileState extends State<Profile> {
         clipper: ClippingClass(),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 2.8,
+          height: MediaQuery.of(context).size.height / 3.3,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -96,7 +96,7 @@ class _ProfileState extends State<Profile> {
           Map<String, dynamic> userInfo = snapshot.data;
           return Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height / 2.8 + 10),
+              SizedBox(height: MediaQuery.of(context).size.height / 3.8 + 10),
               ProfileInfo(Icons.account_circle, userInfo['name']),
               SizedBox(
                 height: sizedBoxHeight,
@@ -167,14 +167,15 @@ class ClippingClass extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = new Path();
+
     path.lineTo(
       0,
-      size.height,
+      size.height / 1.75,
     ); //start path with this if you are making at bottom
 
     var firstStart = Offset(size.width / 5, size.height);
     //fist point of quadratic bezier curve
-    var firstEnd = Offset(size.width / 2.25, size.height - 50.0);
+    var firstEnd = Offset(size.width / 2.2, size.height - 50.0);
     //second point of quadratic bezier curve
     path.quadraticBezierTo(
       firstStart.dx,
@@ -184,11 +185,11 @@ class ClippingClass extends CustomClipper<Path> {
     );
 
     var secondStart = Offset(
-      size.width - (size.width / 3.24),
+      size.width - (size.width / 3.5),
       size.height - 105,
     );
     //third point of quadratic bezier curve
-    var secondEnd = Offset(size.width, size.height - 10);
+    var secondEnd = Offset(size.width, size.height / 1.4);
     //fourth point of quadratic bezier curve
     path.quadraticBezierTo(
       secondStart.dx,
