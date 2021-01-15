@@ -13,7 +13,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       letterSpacing: 1.0
   );
 
-  // Title is required and icon is default the account_circle icon
   CustomAppBar({@required this.title});
 
   @override
@@ -33,11 +32,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             createLogo(),
             SizedBox(height: 10.0,),
-            Text(
-              this.title,
-              style: TextStyle(
-                color: myDarkGreen,
-                fontSize: 36,
+            // Able to scroll text if it is too long
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                this.title,
+                style: TextStyle(
+                  color: myDarkGreen,
+                  fontSize: 36,
+                ),
               ),
             ),
           ],
