@@ -10,6 +10,7 @@ import 'package:share_goods/screens/widgets/shopping_list_item.dart';
 import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/action_button.dart';
 import 'package:share_goods/widgets/app_bar.dart';
+import 'package:share_goods/widgets/alert_dialog.dart';
 
 const String kitchen = "kitchen-k";
 
@@ -49,16 +50,17 @@ class _ShoppingListState extends State<ShoppingList> {
               //title: kitchen['name'],
               title: widget.kitchenName,
             ),
+            // Create the actionButton if the user is admin
             floatingActionButton: widget.currUser == widget.admin
                 ? ActionButton(
                     action: () {
-                      print("hej");
-                      isAdmin();
-                      createAlertDialog(context).then((value) {
-                        setState(() {
-                          addItemToFirestore(value);
-                          //print('tilføjet: $value');
-                        });
+                      createAlertDialog(context, !_inventoryActive).then((value) {
+                        // Check if user typed anything or canceled dialog
+                        if (value != null) {
+                          setState(() {
+                            addItemToFirestore(value);
+                          });
+                        }
                       });
                     },
                   )
@@ -78,6 +80,8 @@ class _ShoppingListState extends State<ShoppingList> {
     );
   }
 
+  /// Checks whether or not the local user is the admin for a kitchen
+  /// This gives the user access to add, edit and/or delete items
   Future<void> isAdmin() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String currUser = auth.currentUser.uid;
@@ -223,42 +227,6 @@ class _ShoppingListState extends State<ShoppingList> {
       BuildContext context, DocumentSnapshot data, bool shouldBuy) {
     final item = Item.fromSnapshot(data);
     return ItemListItemWidget(item, widget.admin == widget.currUser);
-  }
-
-  Future<Map<String, Object>> createAlertDialog(BuildContext context) {
-    TextEditingController myController = TextEditingController();
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Tilføj varer'),
-            content: TextField(
-              controller: myController,
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            actions: [
-              MaterialButton(
-                elevation: 5.0,
-                child: Text('Tilføj'),
-                onPressed: () {
-                  // Check if the user typed anything
-                  if (myController.text.toString().length > 0) {
-                    Map<String, Object> item = {
-                      'name': myController.text.toString(),
-                      'shouldBuy': !_inventoryActive,
-                      'timesBought': 0
-                    };
-                    // Get value when 'add' is pressed
-                    Navigator.of(context).pop(item);
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                },
-              )
-            ],
-          );
-        });
   }
 
   addItemToFirestore(Map<String, Object> item) async {
