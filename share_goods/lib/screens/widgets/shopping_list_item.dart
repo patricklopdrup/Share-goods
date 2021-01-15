@@ -17,9 +17,9 @@ class ItemListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (item.shouldBuy) {
-      return _buildNeedCard(context);
+      return isAdmin ? _adminMenu(context, _buildNeedCard(context)) : _buildNeedCard(context);
     } else {
-      return _buildInventoryCard(context);
+      return isAdmin ? _adminMenu(context, _buildInventoryCard(context)) : _buildInventoryCard(context);
     }
   }
 
@@ -27,7 +27,7 @@ class ItemListItemWidget extends StatelessWidget {
   Widget _buildNeedCard(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: new EdgeInsets.fromLTRB(15, 6, 25, 0),
+      margin: new EdgeInsets.fromLTRB(15, 10, 25, 0),
       color: Colors.red.withOpacity(0),
       child: Container(
         height: 55,
@@ -142,29 +142,25 @@ class ItemListItemWidget extends StatelessWidget {
     );
   }
 
-  /// Build a Card from items that are in the inventory
   Widget _buildInventoryCard(BuildContext context) {
-    return Container(
-      margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
-      child: isAdmin ? _buildAdminCard(context) : _buildNormalCard(context)
-    );
-  }
-
-  Widget _buildNormalCard(BuildContext context) {
     return Card(
       elevation: 0,
-      //margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
+      margin: new EdgeInsets.fromLTRB(15, 10, 25, 0),
       color: Colors.red.withOpacity(0),
-      child: Row(
-        children: [
-          _buildInventoryItemBanner(context),
-          _buildInventoryNeedButton(context),
-        ],
+      child: Container(
+        child: Row(
+          children: [
+            _buildInventoryItemBanner(context),
+            _buildInventoryNeedButton(context),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildAdminCard(BuildContext context) {
+  /// Wrap a Card with an adminMenu given access to edit and delete item
+  /// [card] is the card to be wrapped
+  Widget _adminMenu(BuildContext context, Card card) {
     return FocusedMenuHolder(
       menuItems: [
         FocusedMenuItem(
@@ -204,17 +200,7 @@ class ItemListItemWidget extends StatelessWidget {
       openWithTap: true,
       blurSize: 3,
       onPressed: () {},
-      child: Card(
-        elevation: 0,
-        //margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
-        color: Colors.red.withOpacity(0),
-        child: Row(
-          children: [
-            _buildInventoryItemBanner(context),
-            _buildInventoryNeedButton(context),
-          ],
-        ),
-      ),
+      child: card
     );
   }
 
@@ -278,9 +264,6 @@ class ItemListItemWidget extends StatelessWidget {
               height: 45,
               width: 45,
               alignment: Alignment.center,
-              margin: EdgeInsets.only(
-                left: 10,
-              ),
               child: Text(
                 'Mangler',
                 style: TextStyle(
