@@ -33,9 +33,9 @@ class CreateKitchen extends StatefulWidget {
   _CreateKitchenState createState() => _CreateKitchenState();
 }
 
-
 class _CreateKitchenState extends State<CreateKitchen> {
   FirebaseAuth auth = FirebaseAuth.instance;
+
   Future<Kitchen> createConfirmDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -44,8 +44,7 @@ class _CreateKitchenState extends State<CreateKitchen> {
           return AlertDialog(
             title: Text('Bekræft'),
             content: Text(
-                'Du er ved at oprette ${_myController.text
-                    .toString()}. Er du sikker?'),
+                'Du er ved at oprette ${_myController.text.toString()}. Er du sikker?'),
             actions: [
               MaterialButton(
                 elevation: 5.0,
@@ -61,7 +60,11 @@ class _CreateKitchenState extends State<CreateKitchen> {
                       });
                     }
                   });
-                  Kitchen myKitchen = Kitchen(name: _myController.text.toString(), admin: dbref.collection('Users').doc(auth.currentUser.uid), items: items);
+                  Kitchen myKitchen = Kitchen(
+                      name: _myController.text.toString(),
+                      admin:
+                          dbref.collection('Users').doc(auth.currentUser.uid),
+                      items: items);
 
                   Navigator.of(context).pop(myKitchen);
                 },
@@ -76,9 +79,9 @@ class _CreateKitchenState extends State<CreateKitchen> {
           );
         });
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Opret køkken',
@@ -88,17 +91,20 @@ class _CreateKitchenState extends State<CreateKitchen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Container(
+                child: CreateNameField(
+                  myController: _myController,
+                ),
+              ),
+              SizedBox(
+                height: 25,
+              ),
               Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Container(
-                    child: CreateNameField(
-                      myController: _myController,
+                    child: CreateKitchenList(
+                      wantedItems: _defaultItems,
                     ),
-                  )),
-              Expanded(
-                  flex: 9,
-                  child: Container(
-                    child: CreateKitchenList(wantedItems: _defaultItems,),
                   )),
             ],
           )),
@@ -129,6 +135,7 @@ class _CreateKitchenState extends State<CreateKitchen> {
 
 class CreateKitchenList extends StatefulWidget {
   final Map<String, bool> wantedItems;
+
   CreateKitchenList({this.wantedItems});
 
   @override
@@ -137,14 +144,14 @@ class CreateKitchenList extends StatefulWidget {
 
 class _CreateKitchenListState extends State<CreateKitchenList> {
   @override
-
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 0),
+      padding: EdgeInsets.only(top: 0),
       child: ListView.builder(
           itemCount: widget.wantedItems.length,
           itemBuilder: (context, index) {
-            return CheckListItem(itemTitle: widget.wantedItems.keys.elementAt(index));
+            return CheckListItem(
+                itemTitle: widget.wantedItems.keys.elementAt(index));
           }),
     );
   }
@@ -152,6 +159,7 @@ class _CreateKitchenListState extends State<CreateKitchenList> {
 
 class CheckListItem extends StatefulWidget {
   final String itemTitle;
+
   CheckListItem({this.itemTitle});
 
   @override
@@ -214,7 +222,7 @@ class _CreateNameFieldState extends State<CreateNameField> {
                 ),
                 hintText: 'Navn på køkken',
                 hintStyle:
-                TextStyle(color: myDarkGreen, fontFamily: 'OpenSans'),
+                    TextStyle(color: myDarkGreen, fontFamily: 'OpenSans'),
               )),
         ],
       ),
