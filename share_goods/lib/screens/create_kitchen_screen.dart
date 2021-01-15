@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:share_goods/models/kitchen.dart';
 import 'package:share_goods/utils/Colors.dart';
@@ -16,6 +18,7 @@ class CreateKitchen extends StatefulWidget {
 TextEditingController myController = TextEditingController();
 
 class _CreateKitchenState extends State<CreateKitchen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   Future<Kitchen> createConfirmDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -31,7 +34,8 @@ class _CreateKitchenState extends State<CreateKitchen> {
                 elevation: 5.0,
                 child: Text('OK'),
                 onPressed: () {
-                  Kitchen myKitchen = Kitchen(myController.text.toString(), null, null);
+                  Kitchen myKitchen = Kitchen(name: myController.text.toString(), admin: auth.currentUser.uid);
+                  myKitchen.save();
                   Navigator.of(context).pop(myKitchen);
                 },
               ),

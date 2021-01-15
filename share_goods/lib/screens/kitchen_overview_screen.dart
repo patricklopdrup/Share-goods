@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:share_goods/screens/shoppinglist_screen.dart';
 import 'package:share_goods/widgets/app_bar.dart';
 import 'package:share_goods/widgets/route_slide_animation.dart';
+import 'package:loading_animations/loading_animations.dart';
 
 
 class KitchenOverview extends StatefulWidget {
@@ -16,7 +17,7 @@ class _KitchenOverviewState extends State<KitchenOverview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Mine Køkkener'),
-      body: _buildFuture(context),
+      body: _buildKitchenOverview(context),
     );
   }
 
@@ -34,6 +35,38 @@ class _KitchenOverviewState extends State<KitchenOverview> {
       kitchens.add({'name': data.get('name'), 'kitchen': data.get('kitchen')});
     });
     return kitchens;
+  }
+
+  Widget _buildKitchenOverview(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('Users')
+          .doc(auth.currentUser.uid)
+          .collection('kitchens')
+          .orderBy('name')
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LoadingFadingLine.circle();
+        return _buildList(context, snapshot.data.docs);
+      },
+    );
+  }
+
+  /// Build the list containing the info received from _buildPageViewBody
+  Widget _buildList(
+      BuildContext context, List<DocumentSnapshot> snapshot) {
+    final ScrollController _scrollController = ScrollController();
+    return Scrollbar(
+      isAlwaysShown: true,
+      controller: _scrollController,
+      child: ListView(
+          controller: _scrollController,
+          children: snapshot
+              .map((data) => KitchenCard(title: data.get('name'), ref: data.get('kitchen'),)
+              )
+              .toList()),
+    );
   }
 
 
