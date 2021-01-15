@@ -43,38 +43,56 @@ class _CreateKitchenState extends State<CreateKitchen> {
         builder: (context) {
           return AlertDialog(
             title: Text('Bekræft'),
-            content: Text(
-                'Du er ved at oprette ${_myController.text.toString()}. Er du sikker?'),
+            content: RichText(
+              text: _myController.text.length > 0
+                ? TextSpan(
+                text: 'Du er ved at oprette ',
+                style: TextStyle(color: Colors.black),
+                children: [
+                  TextSpan(
+                    text: "'${_myController.text.toString()}'",
+                    style: TextStyle(color: myGradientGreen2, fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: '. Er du sikker?')
+                ]
+              )
+              : TextSpan(text: 'Du skal give køkkenet et navn.', style: TextStyle(color: Colors.black)),
+            ),
             actions: [
               MaterialButton(
                 elevation: 5.0,
-                child: Text('OK'),
+                child: Text('Annuller'),
                 onPressed: () {
-                  List<Map<String, Object>> items = [];
-                  _defaultItems.forEach((k, v) {
-                    if (v) {
-                      items.add({
-                        'name': k,
-                        'shouldBuy': false,
-                        'timesBought': 0,
-                      });
-                    }
-                  });
-                  Kitchen myKitchen = Kitchen(
-                      name: _myController.text.toString(),
-                      admin:
-                          dbref.collection('Users').doc(auth.currentUser.uid),
-                      items: items);
-
-                  Navigator.of(context).pop(myKitchen);
+                  Navigator.of(context).pop();
                 },
               ),
-              MaterialButton(
-                  elevation: 5.0,
-                  child: Text('Annuller'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
+              // Only show OK button if kitchen name has text
+              _myController.text.length > 0
+                  ? MaterialButton(
+                      elevation: 5.0,
+                      child: Text('OK'),
+                      onPressed: () {
+                        List<Map<String, Object>> items = [];
+                        _defaultItems.forEach((k, v) {
+                          if (v) {
+                            items.add({
+                              'name': k,
+                              'shouldBuy': false,
+                              'timesBought': 0,
+                            });
+                          }
+                        });
+                        Kitchen myKitchen = Kitchen(
+                            name: _myController.text.toString(),
+                            admin: dbref
+                                .collection('Users')
+                                .doc(auth.currentUser.uid),
+                            items: items);
+
+                        Navigator.of(context).pop(myKitchen);
+                      },
+                    )
+                  : null,
             ],
           );
         });
@@ -118,9 +136,9 @@ class _CreateKitchenState extends State<CreateKitchen> {
           setState(() {
             createConfirmDialog(context).then((kitchen) {
               // If cancel is pressed just close the dialog otherwise go to MyHomePage
-              print("HEEEEJ HEEEEEEEJ" + kitchen.name);
-              print("HEEEEJ HEEEEEEEJ" + kitchen.name);
-              if (kitchen.name.length > 0) {
+              if (kitchen != null) {
+                print("HEEEEJ HEEEEEEEJ" + kitchen.name);
+                print("HEEEEJ HEEEEEEEJ" + kitchen.name);
                 kitchen.save();
                 Navigator.of(context).pop();
                 widget.selectTabFunc('Kitchen', 1);
