@@ -5,17 +5,34 @@ import 'package:share_goods/models/kitchen.dart';
 import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/app_bar.dart';
 
+TextEditingController _myController = TextEditingController();
+
+Map<String, bool> _defaultItems = {};
+
 class CreateKitchen extends StatefulWidget {
   final GlobalKey<_CreateKitchenState> key = new GlobalKey();
   final Function selectTabFunc;
 
-  CreateKitchen({this.selectTabFunc});
+  CreateKitchen({this.selectTabFunc}) {
+    _defaultItems = {
+      'Alufolie': false,
+      'Bagepapir': false,
+      'Køkkenrulle': false,
+      'Løg': false,
+      'Opvasketabs': false,
+      'Paprika': false,
+      'Rødløg': false,
+      'Skuresvampe': false,
+      'Sæbe': false,
+    };
+
+    _myController.clear();
+  }
 
   @override
   _CreateKitchenState createState() => _CreateKitchenState();
 }
 
-TextEditingController myController = TextEditingController();
 
 class _CreateKitchenState extends State<CreateKitchen> {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -27,15 +44,25 @@ class _CreateKitchenState extends State<CreateKitchen> {
           return AlertDialog(
             title: Text('Bekræft'),
             content: Text(
-                'Du er ved at oprette ${myController.text
+                'Du er ved at oprette ${_myController.text
                     .toString()}. Er du sikker?'),
             actions: [
               MaterialButton(
                 elevation: 5.0,
                 child: Text('OK'),
                 onPressed: () {
-                  Kitchen myKitchen = Kitchen(name: myController.text.toString(), admin: auth.currentUser.uid);
-                  myKitchen.save();
+                  List<Map<String, Object>> items = [];
+                  _defaultItems.forEach((k, v) {
+                    if (v) {
+                      items.add({
+                        'name': k,
+                        'shouldBuy': false,
+                        'timesBought': 0,
+                      });
+                    }
+                  });
+                  Kitchen myKitchen = Kitchen(name: _myController.text.toString(), admin: dbref.collection('Users').doc(auth.currentUser.uid), items: items);
+
                   Navigator.of(context).pop(myKitchen);
                 },
               ),
@@ -49,9 +76,9 @@ class _CreateKitchenState extends State<CreateKitchen> {
           );
         });
   }
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Opret køkken',
@@ -65,13 +92,13 @@ class _CreateKitchenState extends State<CreateKitchen> {
                   flex: 2,
                   child: Container(
                     child: CreateNameField(
-                      myController: myController,
+                      myController: _myController,
                     ),
                   )),
               Expanded(
                   flex: 9,
                   child: Container(
-                    child: CreateKitchenList(),
+                    child: CreateKitchenList(wantedItems: _defaultItems,),
                   )),
             ],
           )),
@@ -86,11 +113,12 @@ class _CreateKitchenState extends State<CreateKitchen> {
             createConfirmDialog(context).then((kitchen) {
               // If cancel is pressed just close the dialog otherwise go to MyHomePage
               print("HEEEEJ HEEEEEEEJ" + kitchen.name);
+              print("HEEEEJ HEEEEEEEJ" + kitchen.name);
               if (kitchen.name.length > 0) {
+                kitchen.save();
+                Navigator.of(context).pop();
                 widget.selectTabFunc('Kitchen', 1);
               }
-
-              //TODO: Gem køkken i database
             });
           });
         },
@@ -99,45 +127,35 @@ class _CreateKitchenState extends State<CreateKitchen> {
   }
 }
 
-List<String> _inventory = [
-  'Løg',
-  'Køkkenrulle',
-  'Opvasketabs',
-  'Alufolie',
-  'Bagepapir',
-  'Skuresvampe',
-  'Sæbe',
-  'Paprika',
-  'Rødløg'
-];
-
 class CreateKitchenList extends StatefulWidget {
+  final Map<String, bool> wantedItems;
+  CreateKitchenList({this.wantedItems});
+
   @override
   _CreateKitchenListState createState() => _CreateKitchenListState();
 }
 
 class _CreateKitchenListState extends State<CreateKitchenList> {
   @override
+
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0),
       child: ListView.builder(
-          itemCount: _inventory.length,
+          itemCount: widget.wantedItems.length,
           itemBuilder: (context, index) {
-            return CheckListItem(itemTitle: _inventory[index]);
+            return CheckListItem(itemTitle: widget.wantedItems.keys.elementAt(index));
           }),
     );
   }
 }
 
-List<bool> checkBoxList = List.filled(_inventory.length, false);
-
 class CheckListItem extends StatefulWidget {
+  final String itemTitle;
+  CheckListItem({this.itemTitle});
+
   @override
   _CheckListItemState createState() => _CheckListItemState();
-  final String itemTitle;
-
-  CheckListItem({this.itemTitle});
 }
 
 class _CheckListItemState extends State<CheckListItem> {
@@ -156,11 +174,11 @@ class _CheckListItemState extends State<CheckListItem> {
           style: TextStyle(fontSize: 15),
         ),
         value: _isSelected,
-        onChanged: (bool hej) {
+        onChanged: (bool isChecked) {
+          _defaultItems[widget.itemTitle] = isChecked;
           setState(() {
-            _isSelected = hej;
+            _isSelected = isChecked;
           });
-          print("HEJ");
         },
       ),
     );

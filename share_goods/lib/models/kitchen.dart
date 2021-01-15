@@ -5,27 +5,27 @@ final dbref = FirebaseFirestore.instance;
 
 class Kitchen {
   final String name;
-  final List<String> items;
-  final String admin;
+  final List<Map<String, Object>> items;
+  final DocumentReference admin;
   final DocumentReference reference;
 
   Kitchen({this.name, this.items, this.admin, this.reference});
 
   save() {
+    var batch = dbref.batch();
+
     if (reference == null) {
       dbref.collection('shoppingList').add({
         'name': name,
         'admin': admin,
       }).then(
         (ref) => {
-          ref.collection('items').add(
-            {
-              'name': 'test',
-              'shouldBuy': false,
-              'timesBought': 0,
-            },
-          ),
-          dbref.collection('Users').doc(admin).collection('kitchens').add({'kitchen': ref, 'name': name})
+          items.forEach((doc) {
+            var docRef = ref.collection('items').doc();
+            batch.set(docRef, doc);
+          }),
+          batch.commit(),
+          dbref.collection('Users').doc(admin.id).collection('kitchens').add({'kitchen': ref, 'name': name})
         },
       );
     } else {
