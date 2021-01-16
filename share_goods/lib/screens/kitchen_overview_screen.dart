@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:share_goods/screens/shoppinglist_screen.dart';
-import 'package:share_goods/utils/Colors.dart';
+import 'package:share_goods/screens/widgets/kitchen_overview_leave_dialog.dart';
 import 'package:share_goods/widgets/app_bar.dart';
 import 'package:share_goods/widgets/route_slide_animation.dart';
 import 'package:loading_animations/loading_animations.dart';
@@ -78,12 +80,59 @@ class _KitchenOverviewState extends State<KitchenOverview> {
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
             controller: _scrollController,
             children: snapshot
-                .map((data) => KitchenCard(
-                      title: data.get('name'),
-                      ref: data.get('kitchen'),
+                .map((data) => _adminMenu(
+                      context,
+                      KitchenCard(
+                        title: data.get('name'),
+                        ref: data.get('kitchen'),
+                      ),
                     ))
                 .toList()),
       ),
+    );
+  }
+
+  /// Wrap a Card with an adminMenu given access to edit and delete item
+  /// [card] is the card to be wrapped
+  Widget _adminMenu(BuildContext context, KitchenCard card) {
+    return FocusedMenuHolder(
+      menuItems: [
+        FocusedMenuItem(
+          title: Text(
+            'Forlad køkken',
+            style: TextStyle(color: Colors.redAccent),
+          ),
+          trailingIcon: Icon(
+            Icons.exit_to_app_rounded,
+            color: Colors.redAccent,
+          ),
+          onPressed: () {
+            _leaveKitchen(card);
+          },
+        ),
+      ],
+      menuWidth: MediaQuery.of(context).size.width * 0.60,
+      animateMenuItems: true,
+      duration: Duration(milliseconds: 100),
+      openWithTap: false,
+      blurSize: 3,
+      onPressed: () {},
+      child: card,
+    );
+  }
+
+  _leaveKitchen(KitchenCard kitchen) {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    DocumentReference userKitchen = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('kitchens')
+        .doc(kitchen.ref.id);
+
+    buildLeaveKitchenDialog(context, kitchen.title).then(
+      (value) => {
+        if (value != null && value) {userKitchen.delete()}
+      },
     );
   }
 }
@@ -97,20 +146,22 @@ class KitchenCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        Future<DocumentSnapshot> hej = ref.get();
-        hej.then((value) => Navigator.push(
-            context,
-            SlidingPageChange(
-                page: ShoppingList(
-              kitchenDoc: value.reference,
-              kitchenName: title,
-            ))));
-      },
-      leading: Icon(Icons.kitchen),
-      title: Text(title),
-      trailing: Icon(Icons.arrow_forward),
+    return Card(
+      child: ListTile(
+        onTap: () {
+          Future<DocumentSnapshot> hej = ref.get();
+          hej.then((value) => Navigator.push(
+              context,
+              SlidingPageChange(
+                  page: ShoppingList(
+                kitchenDoc: value.reference,
+                kitchenName: title,
+              ))));
+        },
+        leading: Icon(Icons.kitchen),
+        title: Text(title),
+        trailing: Icon(Icons.arrow_forward),
+      ),
     );
   }
 }
