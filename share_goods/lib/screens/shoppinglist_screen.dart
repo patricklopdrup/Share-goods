@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_goods/models/item.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:share_goods/screens/widgets/shopping_list_item.dart';
@@ -26,14 +29,120 @@ class ShoppingList extends StatefulWidget {
   _ShoppingListState createState() => _ShoppingListState();
 }
 
-class _ShoppingListState extends State<ShoppingList> {
+class _ShoppingListState extends State<ShoppingList>
+    with SingleTickerProviderStateMixin {
   bool _inventoryActive = false;
+  Animation<double> _animation;
+  AnimationController _animationController;
 
   @override
   void initState() {
-    // TODO: implement initState
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
     super.initState();
     isAdmin();
+  }
+
+  Widget _buildQRDialog(BuildContext context) {
+    return new Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15))),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Stack(children: [
+        Container(
+          padding: EdgeInsets.only(top: 18, bottom: 35),
+          margin: EdgeInsets.only(top: 13, right: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black38, blurRadius: 12, offset: Offset(0, 0)),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: "Join",
+                          style: TextStyle(color: Colors.black, fontSize: 50, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      RichText(
+                        text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: '"',
+                                  style: TextStyle(color: Colors.black)),
+                              TextSpan(
+                                  text: widget.kitchenName,
+                                  style: TextStyle(color: Colors.green[600])),
+                              TextSpan(
+                                  text: '"',
+                                  style: TextStyle(color: Colors.black))
+                            ],
+                            style: TextStyle(
+                                fontSize: 23, fontWeight: FontWeight.bold)),
+                      ),
+                      SizedBox(height: 20,),
+                      QrImage(
+                        data: json.encode({'kitchenID': widget.kitchenDoc.id, 'kitchenName': widget.kitchenName}),
+                        size: 200,
+                        version: QrVersions.auto,
+                        foregroundColor: Colors.green[500],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 0.0,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Align(
+              alignment: Alignment.topRight,
+              child: CircleAvatar(
+                radius: 14.0,
+                backgroundColor: Colors.white,
+                child: Icon(Icons.close, color: Colors.red),
+              ),
+            ),
+          ),
+        ),
+      ]),
+
+      // content: new Container(
+      //   alignment: Alignment.center,
+      //   height: 200,
+      //   width: 200,
+      //   child: QrImage(
+      //     data: 'test',
+      //     size: 200,
+      //     version: QrVersions.auto,
+      //   ),
+      // ),
+    );
   }
 
   @override
@@ -52,18 +161,67 @@ class _ShoppingListState extends State<ShoppingList> {
             ),
             // Create the actionButton if the user is admin
             floatingActionButton: widget.currUser == widget.admin
-                ? ActionButton(
-                    action: () {
-                      createAlertDialog(context, !_inventoryActive).then((value) {
-                        // Check if user typed anything or canceled dialog
-                        if (value != null) {
-                          setState(() {
-                            addItemToFirestore(value);
+                ? FloatingActionBubble(
+                    items: [
+                      Bubble(
+                        title: "Join QR Code",
+                        iconColor: Colors.white,
+                        bubbleColor: Colors.blue,
+                        icon: Icons.settings,
+                        titleStyle:
+                            TextStyle(fontSize: 16, color: Colors.white),
+                        onPress: () {
+                          return showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                _buildQRDialog(context),
+                          );
+                          _animationController.reverse();
+                        },
+                      ),
+                      // Floating action menu item
+                      Bubble(
+                        title: "Add Item",
+                        iconColor: Colors.white,
+                        bubbleColor: Colors.blue,
+                        icon: Icons.add,
+                        titleStyle:
+                            TextStyle(fontSize: 16, color: Colors.white),
+                        onPress: () {
+                          _animationController.reverse();
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            createAlertDialog(context, !_inventoryActive)
+                                .then((value) {
+                              // Check if user typed anything or canceled dialog
+                              if (value != null) {
+                                setState(() {
+                                  addItemToFirestore(value);
+                                });
+                              }
+                            });
                           });
-                        }
-                      });
-                    },
+                        },
+                      ),
+                    ],
+                    onPress: () => _animationController.isCompleted
+                        ? _animationController.reverse()
+                        : _animationController.forward(),
+                    icon: AnimatedIcons.menu_close,
+                    iconColor: Colors.blue,
+                    animation: _animation,
                   )
+                // ? ActionButton(
+                //     action: () {
+                //       createAlertDialog(context, !_inventoryActive).then((value) {
+                //         // Check if user typed anything or canceled dialog
+                //         if (value != null) {
+                //           setState(() {
+                //             addItemToFirestore(value);
+                //           });
+                //         }
+                //       });
+                //     },
+                //   )
                 : null,
             body: Column(children: [
               SizedBox(height: 20),

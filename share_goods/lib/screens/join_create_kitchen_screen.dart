@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/screens/create_kitchen_screen.dart';
+import 'package:share_goods/screens/join_kitchen_screen.dart';
 import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/app_bar.dart';
 import 'package:share_goods/widgets/route_slide_animation.dart';
@@ -34,7 +35,11 @@ class _CreateJoinKitchenState extends State<CreateJoinKitchen> {
       children: [
         SizedBox(height: 150,),
         RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                SlidingPageChange(page: JoinKitchen(selectTabFunc: widget.selectTabFunc,))
+            );
+          },
           color: myLightGreen,
           child: Text(
             'Tilmeld køkken',
