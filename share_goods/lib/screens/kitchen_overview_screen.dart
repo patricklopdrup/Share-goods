@@ -119,7 +119,7 @@ class _KitchenOverviewState extends State<KitchenOverview> {
       controller: _scrollController,
       child: Container(
         child: ListView(
-            padding: EdgeInsets.fromLTRB(0, 1, 0, 20),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
             controller: _scrollController,
             children: snapshot
                 .map((data) => KitchenCard(

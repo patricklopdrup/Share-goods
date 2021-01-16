@@ -57,7 +57,7 @@ class BottomNavigatorState extends State<BottomNavigator> {
         ]),
         bottomNavigationBar: BottomNavigationBar(
           key: globalKey,
-          backgroundColor: myLightGreen,
+          backgroundColor: myGradientGreen1,
           selectedItemColor: myDarkGreen,
           unselectedItemColor: Colors.white,
           selectedFontSize: 12,
