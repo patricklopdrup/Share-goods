@@ -116,7 +116,7 @@ class _ProfileState extends State<Profile> {
                       _auth.signOut();
                     },
                     child: Text('Log ud', style: TextStyle(color: Colors.white)),
-                    color: Colors.grey),
+                    color: myDarkGreen),
               ),
             ],
           );

@@ -40,7 +40,7 @@ class _CreateJoinKitchenState extends State<CreateJoinKitchen> {
                 SlidingPageChange(page: JoinKitchen(selectTabFunc: widget.selectTabFunc,))
             );
           },
-          color: myLightGreen,
+          color: myDarkGreen,
           child: Text(
             'Tilmeld køkken',
             style: TextStyle(fontSize: 15.0, fontFamily: 'OpenSans', fontWeight: FontWeight.bold, letterSpacing: 2, color: Colors.white),
@@ -53,7 +53,7 @@ class _CreateJoinKitchenState extends State<CreateJoinKitchen> {
                 SlidingPageChange(page: CreateKitchen(selectTabFunc: widget.selectTabFunc,))
             );
           },
-          color: myLightGreen,
+          color: myDarkGreen,
           child: Text(
             'Opret køkken',
             style: TextStyle(fontSize: 15.0, fontFamily: 'OpenSans', fontWeight: FontWeight.bold, letterSpacing: 2, color: Colors.white),

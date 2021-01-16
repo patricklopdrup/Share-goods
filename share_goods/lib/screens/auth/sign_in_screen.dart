@@ -261,7 +261,7 @@ class _SignInState extends State<SignIn> {
             elevation: 5.0,
             padding: EdgeInsets.all(15.0),
             child: Text(
-              'LOGIN',
+              'LOG IND',
               style: TextStyle(
                   color: Color(0xFF527DAA),
                   letterSpacing: 4.0,
@@ -276,12 +276,12 @@ class _SignInState extends State<SignIn> {
                 print('Result is' + result);
                 if (result == null) {
                   print('Result was null');
-                  setState(() => error = 'Enter valid email or password');
+                  setState(() => error = 'Indtast korrekt mail eller kode');
                 }
                 print('Email is:' + email);
                 print('Password is' + password);
               } else {
-                setState(() => error = 'Enter valid email or password');
+                setState(() => error = 'Indtast korrekt mail eller kode');
               }
             }),
       ),

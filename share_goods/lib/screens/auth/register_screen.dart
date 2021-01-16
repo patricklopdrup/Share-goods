@@ -367,7 +367,7 @@ class _RegisterState extends State<Register> {
         switch (e) {
           case 'email-already-in-use':
             {
-              setState(() => error = 'Entered email is already in use!');
+              setState(() => error = 'Mail er allerede brugt');
             }
             break;
 
@@ -379,7 +379,7 @@ class _RegisterState extends State<Register> {
         }
       }
     } else {
-      setState(() => error = 'Enter valid input');
+      setState(() => error = 'Udfyld alle felter');
     }
   }
 }

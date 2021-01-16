@@ -79,7 +79,7 @@ class _ShoppingListState extends State<ShoppingList>
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "Join",
+                          text: "Tilmeld",
                           style: TextStyle(color: Colors.black, fontSize: 50, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -164,9 +164,9 @@ class _ShoppingListState extends State<ShoppingList>
                 ? FloatingActionBubble(
                     items: [
                       Bubble(
-                        title: "Join QR Code",
+                        title: "Tilmeld via QR kode",
                         iconColor: Colors.white,
-                        bubbleColor: Colors.blue,
+                        bubbleColor: myDarkGreen,
                         icon: Icons.settings,
                         titleStyle:
                             TextStyle(fontSize: 16, color: Colors.white),
@@ -181,9 +181,9 @@ class _ShoppingListState extends State<ShoppingList>
                       ),
                       // Floating action menu item
                       Bubble(
-                        title: "Add Item",
+                        title: "Tilføj vare",
                         iconColor: Colors.white,
-                        bubbleColor: Colors.blue,
+                        bubbleColor: myDarkGreen,
                         icon: Icons.add,
                         titleStyle:
                             TextStyle(fontSize: 16, color: Colors.white),
@@ -207,7 +207,7 @@ class _ShoppingListState extends State<ShoppingList>
                         ? _animationController.reverse()
                         : _animationController.forward(),
                     icon: AnimatedIcons.menu_close,
-                    iconColor: Colors.blue,
+                    iconColor: myDarkGreen,
                     animation: _animation,
                   )
                 // ? ActionButton(
