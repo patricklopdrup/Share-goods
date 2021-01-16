@@ -57,11 +57,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         key: _textKey,
         text: TextSpan(children: [
           TextSpan(
-            text: 'Share ',
+            text: 'Share',
             style: defaultStyle,
           ),
           TextSpan(
-            text: 'g',
+            text: 'G',
             style: defaultStyle,
           ),
           TextSpan(text: ' ', style: TextStyle(fontSize: 5.0)),

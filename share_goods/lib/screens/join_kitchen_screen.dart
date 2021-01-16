@@ -33,10 +33,10 @@ class _JoinKitchenState extends State<JoinKitchen> {
               : [
             Expanded(
               flex: 1,
-              child: Text("Test"),
+              child: Text("Scan QR-kode", style: TextStyle(fontSize: 16),),
             ),
             Expanded(
-              flex: 5,
+              flex: 8,
               child: _buildQrView(context),
             )
           ],
