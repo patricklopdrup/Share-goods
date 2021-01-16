@@ -10,10 +10,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_goods/models/item.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:share_goods/screens/widgets/shopping_list_item.dart';
+import 'package:share_goods/screens/widgets/shoppinglist_add_item_dialog.dart';
 import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/action_button.dart';
 import 'package:share_goods/widgets/app_bar.dart';
-import 'package:share_goods/widgets/shoppinglist_alert_dialog.dart';
 
 const String kitchen = "kitchen-k";
 
@@ -164,6 +164,19 @@ class _ShoppingListState extends State<ShoppingList>
                 ? FloatingActionBubble(
                     items: [
                       Bubble(
+                        title: "Overfør Administrator",
+                        iconColor: Colors.white,
+                        bubbleColor: Colors.blue,
+                        icon: Icons.app_registration,
+                        titleStyle:
+                        TextStyle(fontSize: 16, color: Colors.white),
+                        onPress: () {
+                          _animationController.reverse();
+                          Future.delayed(const Duration(milliseconds: 200), ()
+                          {});
+                          }
+                      ),
+                      Bubble(
                         title: "Join QR Code",
                         iconColor: Colors.white,
                         bubbleColor: Colors.blue,
@@ -171,12 +184,15 @@ class _ShoppingListState extends State<ShoppingList>
                         titleStyle:
                             TextStyle(fontSize: 16, color: Colors.white),
                         onPress: () {
-                          return showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                _buildQRDialog(context),
-                          );
                           _animationController.reverse();
+                          Future.delayed(const Duration(milliseconds: 200), ()
+                          {
+                            return showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  _buildQRDialog(context),
+                            );
+                          });
                         },
                       ),
                       // Floating action menu item
@@ -190,7 +206,7 @@ class _ShoppingListState extends State<ShoppingList>
                         onPress: () {
                           _animationController.reverse();
                           Future.delayed(const Duration(milliseconds: 200), () {
-                            createAlertDialog(context, !_inventoryActive)
+                            buildAddItemDialog(context, !_inventoryActive)
                                 .then((value) {
                               // Check if user typed anything or canceled dialog
                               if (value != null) {

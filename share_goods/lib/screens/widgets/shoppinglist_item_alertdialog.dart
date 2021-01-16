@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:share_goods/models/item.dart';
 import 'package:share_goods/utils/Colors.dart';
 
-Future<bool> deleteDialog(BuildContext context, Item item) {
+Future<bool> buildDeleteItemDialog(BuildContext context, Item item) {
   return showDialog(
       context: context,
       barrierDismissible: true,
@@ -48,7 +48,7 @@ Future<bool> deleteDialog(BuildContext context, Item item) {
       });
 }
 
-Future<String> editAlertdialog(BuildContext context, Item item) {
+Future<String> buildEditItemDialog(BuildContext context, Item item) {
   TextEditingController myController = TextEditingController();
   return showDialog(
       context: context,

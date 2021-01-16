@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:share_goods/models/item.dart';
-import 'package:share_goods/widgets/shoppinglist_item_alertdialog.dart';
+import 'package:share_goods/screens/widgets/shoppinglist_item_alertdialog.dart';
 
 class ItemListItemWidget extends StatelessWidget {
   ItemListItemWidget(this.item, this.isAdmin);
@@ -167,7 +167,7 @@ class ItemListItemWidget extends StatelessWidget {
           title: Text('Rediger'),
           trailingIcon: Icon(Icons.edit),
           onPressed: () {
-            editAlertdialog(context, item).then((value) {
+            buildEditItemDialog(context, item).then((value) {
               // Function returns null if dismissed. Need to check
               if (value != null) {
                 Future.delayed(Duration(milliseconds: 350), () {
@@ -183,7 +183,7 @@ class ItemListItemWidget extends StatelessWidget {
             onPressed: () {
               // Delete item if OK button is pressed / if true is returned
               Future.delayed(Duration(milliseconds: 200), () {
-                deleteDialog(context, item).then((value) {
+                buildDeleteItemDialog(context, item).then((value) {
                   // Function returns null if dismissed. Need to check
                   if (value != null && value) {
                     Future.delayed(Duration(milliseconds: 350), () {
@@ -197,7 +197,7 @@ class ItemListItemWidget extends StatelessWidget {
       menuWidth: MediaQuery.of(context).size.width * 0.50,
       animateMenuItems: true,
       duration: Duration(milliseconds: 100),
-      openWithTap: true,
+      openWithTap: false,
       blurSize: 3,
       onPressed: () {},
       child: card
