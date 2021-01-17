@@ -9,9 +9,6 @@ import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/route_slide_animation.dart';
 
 class SignIn extends StatefulWidget {
-  final Function togglePage;
-  SignIn({this.togglePage});
-
   @override
   _SignInState createState() => _SignInState();
 }

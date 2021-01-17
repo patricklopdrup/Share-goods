@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_goods/bottom_navigator.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:share_goods/utils/Colors.dart';
@@ -356,6 +357,8 @@ class _RegisterState extends State<Register> {
         print('Result is ' + result.uid);
         if (result == null) {
           print('Result was null');
+        } else {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNavigator()), (route) => false);
         }
       } catch (e) {
         switch (e) {
