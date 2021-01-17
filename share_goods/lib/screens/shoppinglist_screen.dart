@@ -165,7 +165,7 @@ class _ShoppingListState extends State<ShoppingList>
                       Bubble(
                         title: "Overfør Administrator",
                         iconColor: Colors.white,
-                        bubbleColor: Colors.blue,
+                        bubbleColor: myDarkGreen,
                         icon: Icons.app_registration,
                         titleStyle:
                         TextStyle(fontSize: 16, color: Colors.white),
