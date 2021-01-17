@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:share_goods/models/kitchen.dart';
 import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/app_bar.dart';
 import 'package:share_goods/widgets/create_kitchen_alert_dialog.dart';

@@ -12,7 +12,6 @@ import 'package:loading_animations/loading_animations.dart';
 import 'package:share_goods/screens/widgets/shopping_list_item.dart';
 import 'package:share_goods/screens/widgets/shoppinglist_add_item_dialog.dart';
 import 'package:share_goods/utils/Colors.dart';
-import 'package:share_goods/widgets/action_button.dart';
 import 'package:share_goods/widgets/app_bar.dart';
 
 const String kitchen = "kitchen-k";

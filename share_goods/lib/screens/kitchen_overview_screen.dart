@@ -38,22 +38,6 @@ class _KitchenOverviewState extends State<KitchenOverview> {
     );
   }
 
-  Future _getKitchens() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-
-    CollectionReference ref = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(auth.currentUser.uid)
-        .collection('kitchens');
-
-    QuerySnapshot userKitchens = await ref.get();
-    List<Map<String, Object>> kitchens = [];
-    userKitchens.docs.forEach((data) {
-      kitchens.add({'name': data.get('name'), 'kitchen': data.get('kitchen')});
-    });
-    return kitchens;
-  }
-
   Widget _buildKitchenOverview(BuildContext context) {
     FirebaseAuth auth = FirebaseAuth.instance;
     return StreamBuilder<QuerySnapshot>(

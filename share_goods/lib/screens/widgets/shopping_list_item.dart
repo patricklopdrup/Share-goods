@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:share_goods/models/item.dart';
+import 'package:share_goods/screens/widgets/shoppinglist_item_alertdialog.dart';
 import 'package:share_goods/utils/Colors.dart';
-import 'package:share_goods/widgets/shoppinglist_item_alertdialog.dart';
 
 class ItemListItemWidget extends StatelessWidget {
   ItemListItemWidget(this.item, this.isAdmin);
