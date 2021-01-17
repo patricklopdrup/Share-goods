@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:share_goods/models/item.dart';
+import 'package:share_goods/screens/widgets/shoppinglist_item_alertdialog.dart';
+import 'package:share_goods/utils/Colors.dart';
 
 class ItemListItemWidget extends StatelessWidget {
-  ItemListItemWidget(this.item);
+  ItemListItemWidget(this.item, this.isAdmin);
 
   final Item item;
+  final bool isAdmin;
 
   /// Initiate build from an [Item] object
   ///
@@ -13,9 +18,13 @@ class ItemListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (item.shouldBuy) {
-      return _buildNeedCard(context);
+      return isAdmin
+          ? _adminMenu(context, _buildNeedCard(context))
+          : _buildNeedCard(context);
     } else {
-      return _buildInventoryCard(context);
+      return isAdmin
+          ? _adminMenu(context, _buildInventoryCard(context))
+          : _buildInventoryCard(context);
     }
   }
 
@@ -23,7 +32,7 @@ class ItemListItemWidget extends StatelessWidget {
   Widget _buildNeedCard(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: new EdgeInsets.fromLTRB(15, 6, 25, 0),
+      margin: new EdgeInsets.fromLTRB(15, 10, 25, 0),
       color: Colors.red.withOpacity(0),
       child: Container(
         height: 55,
@@ -105,7 +114,8 @@ class ItemListItemWidget extends StatelessWidget {
                 'Køb',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.lightGreen,
+                  color: myGradientGreen2,
+                  letterSpacing: 1.2,
                 ),
               ),
             ),
@@ -121,7 +131,7 @@ class ItemListItemWidget extends StatelessWidget {
       width: 30,
       height: 30,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(118, 222, 187, 1),
+        color: myGradientGreen2,
         shape: BoxShape.circle,
       ),
       child: Align(
@@ -129,8 +139,8 @@ class ItemListItemWidget extends StatelessWidget {
         child: Text(
           "!",
           style: TextStyle(
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
             fontSize: 20,
           ),
         ),
@@ -138,17 +148,18 @@ class ItemListItemWidget extends StatelessWidget {
     );
   }
 
-  /// Build a Card from items that are in the inventory
   Widget _buildInventoryCard(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: new EdgeInsets.fromLTRB(25, 10, 25, 0),
+      margin: new EdgeInsets.fromLTRB(15, 10, 25, 0),
       color: Colors.red.withOpacity(0),
-      child: Row(
-        children: [
-          _buildInventoryItemBanner(context),
-          _buildInventoryNeedButton(context),
-        ],
+      child: Container(
+        child: Row(
+          children: [
+            _buildInventoryItemBanner(context),
+            _buildInventoryNeedButton(context),
+          ],
+        ),
       ),
     );
   }
@@ -213,14 +224,12 @@ class ItemListItemWidget extends StatelessWidget {
               height: 45,
               width: 45,
               alignment: Alignment.center,
-              margin: EdgeInsets.only(
-                left: 10,
-              ),
               child: Text(
                 'Mangler',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.redAccent,
+                  letterSpacing: 1.2,
                 ),
               ),
             ),
@@ -228,5 +237,56 @@ class ItemListItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Wrap a Card with an adminMenu given access to edit and delete item
+  /// [card] is the card to be wrapped
+  Widget _adminMenu(BuildContext context, Card card) {
+    return FocusedMenuHolder(
+        menuItems: [
+          FocusedMenuItem(
+            title: Text('Rediger'),
+            trailingIcon: Icon(Icons.edit),
+            onPressed: () {
+              buildEditItemDialog(context, item).then((value) {
+                // Function returns null if dismissed. Need to check
+                if (value != null) {
+                  Future.delayed(Duration(milliseconds: 350), () {
+                    item.reference.update({'name': value});
+                  });
+                }
+              });
+            },
+          ),
+          FocusedMenuItem(
+              title: Text(
+                'Slet',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              trailingIcon: Icon(
+                Icons.delete,
+                color: Colors.redAccent,
+              ),
+              onPressed: () {
+                // Delete item if OK button is pressed / if true is returned
+                Future.delayed(Duration(milliseconds: 200), () {
+                  buildDeleteItemDialog(context, item).then((value) {
+                    // Function returns null if dismissed. Need to check
+                    if (value != null && value) {
+                      Future.delayed(Duration(milliseconds: 350), () {
+                        item.reference.delete();
+                      });
+                    }
+                  });
+                });
+              }),
+        ],
+        menuWidth: MediaQuery.of(context).size.width * 0.50,
+        animateMenuItems: true,
+        duration: Duration(milliseconds: 100),
+        openWithTap: false,
+        blurSize: 3,
+        onPressed: () {},
+        child: card);
   }
 }
