@@ -1,7 +1,7 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:share_goods/screens/auth/forgot_password_screen.dart';
 import 'package:share_goods/screens/auth/register_screen.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
@@ -26,6 +26,7 @@ class _SignInState extends State<SignIn> {
   String password = '';
   String error = '';
   bool checkS = false;
+
   // text styles
   TextStyle defaultStyle = TextStyle(color: Colors.white, fontSize: 10.0);
   TextStyle linkStyle = TextStyle(color: myLightGreen, fontSize: 12.0);
@@ -232,11 +233,12 @@ class _SignInState extends State<SignIn> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           onPressed: () {
-            Navigator.push(
-              context,
-              SlidingPageChange(page: ForgotPW()),
-            );
-            print('Forgot pw Button Pressed');
+            _buildForgotPWDialog(context);
+            // Navigator.push(
+            //   context,
+            //   SlidingPageChange(page: ForgotPW()),
+            // );
+            // print('Forgot pw Button Pressed');
           },
           padding: EdgeInsets.only(right: 0.0),
           child: Text(
@@ -277,8 +279,7 @@ class _SignInState extends State<SignIn> {
 
   logIn() async {
     if (_formKey.currentState.validate()) {
-      dynamic result =
-          await _auth.signInMail(email.trim(), password.trim());
+      dynamic result = await _auth.signInMail(email.trim(), password.trim());
       if (result == null) {
         setState(() => error = 'Indtast korrekt mail eller kode');
       }
@@ -308,5 +309,142 @@ class _SignInState extends State<SignIn> {
               },
           )
         ]));
+  }
+
+  Future<String> _buildForgotPWDialog(BuildContext context) {
+    TextEditingController myController = TextEditingController();
+    bool forgotPWError = false;
+    bool mailSent = false;
+    String forgotPWErrorMsg;
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    String _getErrorMsg(String msg) {
+      switch (msg) {
+        case "user-not-found":
+          return "Ingen bruger fundet med den mail!";
+          break;
+        case "user-disabled":
+          return "Konto er deaktiveret!";
+          break;
+        case "invalid-email":
+          return "Ugyldig mail";
+          break;
+        default:
+          return "Ukendt fejl - " + msg;
+      }
+    }
+
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: RichText(
+                  text: TextSpan(
+                    text: !mailSent ? "Glemt kodeord" : "Mail sendt",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    !mailSent
+                        ? TextField(
+                            controller: myController,
+                            textCapitalization: TextCapitalization.sentences,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              hintText: "Indtast mail",
+                              errorText:
+                                  forgotPWError ? forgotPWErrorMsg : null,
+                            ),
+                            onSubmitted: (text) {
+                              if (myController.text.toString().length > 0) {
+                                auth
+                                    .sendPasswordResetEmail(
+                                      email: myController.text.toString(),
+                                    )
+                                    .then((value) => {
+                                          setState(() {
+                                            mailSent = true;
+                                          }),
+                                        })
+                                    .catchError(
+                                      (err) => {
+                                        setState(() {
+                                          forgotPWError = true;
+                                          forgotPWErrorMsg =
+                                              _getErrorMsg(err.code);
+                                        })
+                                      },
+                                    );
+                                //Navigator.of(context).pop(myController.text.toString());
+                              } else {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                          )
+                        : RichText(
+                            text: TextSpan(
+                              text: 'Sendt mail til "',
+                              children: [
+                                TextSpan(text: myController.text.toString()),
+                                TextSpan(text: '" med link til at nulstille kode!')
+                              ],
+                              style: TextStyle(color: Colors.black, fontSize: 20),
+                            ),
+                          ),
+                  ],
+                ),
+                actions: [
+                  // Cancel button
+                  !mailSent
+                      ? MaterialButton(
+                          elevation: 5.0,
+                          child: Text('Annuller'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      : null,
+                  // OK button
+                  MaterialButton(
+                    elevation: 5.0,
+                    child: Text(
+                      'OK',
+                      style: TextStyle(color: myGradientGreen2),
+                    ),
+                    onPressed: () {
+                      if (!mailSent && myController.text.toString().length > 0) {
+                        auth
+                            .sendPasswordResetEmail(
+                              email: myController.text.toString(),
+                            )
+                            .then((value) => {print("DET VIRKER LOL")})
+                            .catchError(
+                              (err) => {
+                                setState(() {
+                                  forgotPWError = true;
+                                  forgotPWErrorMsg = _getErrorMsg(err.code);
+                                })
+                              },
+                            );
+                        //Navigator.of(context).pop(myController.text.toString());
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  )
+                ],
+              );
+            },
+          );
+        });
   }
 }
