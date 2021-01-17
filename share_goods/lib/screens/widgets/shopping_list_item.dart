@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:share_goods/models/item.dart';
+import 'package:share_goods/utils/Colors.dart';
 import 'package:share_goods/widgets/shoppinglist_item_alertdialog.dart';
 
 class ItemListItemWidget extends StatelessWidget {
@@ -109,7 +110,8 @@ class ItemListItemWidget extends StatelessWidget {
                 'Køb',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.lightGreen,
+                  color: myGradientGreen2,
+                  letterSpacing: 1.2,
                 ),
               ),
             ),
@@ -125,7 +127,7 @@ class ItemListItemWidget extends StatelessWidget {
       width: 30,
       height: 30,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(118, 222, 187, 1),
+        color: myGradientGreen2,
         shape: BoxShape.circle,
       ),
       child: Align(
@@ -133,8 +135,8 @@ class ItemListItemWidget extends StatelessWidget {
         child: Text(
           "!",
           style: TextStyle(
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
             fontSize: 20,
           ),
         ),
@@ -269,6 +271,7 @@ class ItemListItemWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.redAccent,
+                  letterSpacing: 1.2,
                 ),
               ),
             ),

@@ -9,7 +9,7 @@ Future<bool> deleteDialog(BuildContext context, Item item) {
       barrierDismissible: true,
       builder: (context) {
         return AlertDialog(
-          title: Text('Slet varer'),
+          title: Text('Slet vare'),
           content: RichText(
             text: TextSpan(
                 text: 'Vil du slette: ',

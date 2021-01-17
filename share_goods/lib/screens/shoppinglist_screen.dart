@@ -167,7 +167,7 @@ class _ShoppingListState extends State<ShoppingList>
                         title: "Tilmeld via QR kode",
                         iconColor: Colors.white,
                         bubbleColor: myDarkGreen,
-                        icon: Icons.settings,
+                        icon: Icons.qr_code_rounded,
                         titleStyle:
                             TextStyle(fontSize: 16, color: Colors.white),
                         onPress: () {

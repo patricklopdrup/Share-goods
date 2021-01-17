@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_goods/utils/Colors.dart';
 
 Future<Map<String, Object>> createAlertDialog(BuildContext context, bool shouldBuy) {
   TextEditingController myController = TextEditingController();
@@ -7,8 +8,17 @@ Future<Map<String, Object>> createAlertDialog(BuildContext context, bool shouldB
       barrierDismissible: true,
       builder: (context) {
         return AlertDialog(
-          title: Text('Tilføj varer'),
+          title: Text('Tilføj en vare'),
           content: TextField(
+            decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: myDarkGreen),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: myDarkGreen),
+              ),
+            ),
+            cursorColor: myDarkGreen,
             controller: myController,
             textCapitalization: TextCapitalization.sentences,
             autofocus: true,
@@ -25,7 +35,7 @@ Future<Map<String, Object>> createAlertDialog(BuildContext context, bool shouldB
             // Add button
             MaterialButton(
               elevation: 5.0,
-              child: Text('Tilføj'),
+              child: Text('Tilføj',),
               onPressed: () {
                 // Check if the user typed anything
                 if (myController.text.toString().length > 0) {
