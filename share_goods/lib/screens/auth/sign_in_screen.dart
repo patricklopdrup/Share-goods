@@ -2,14 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:share_goods/screens/auth/forgot_password_screen.dart';
+import 'package:share_goods/screens/auth/register_screen.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:share_goods/utils/Colors.dart';
+import 'package:share_goods/widgets/route_slide_animation.dart';
 
 class SignIn extends StatefulWidget {
-  final Function togglePage;
-  SignIn({this.togglePage});
-
   @override
   _SignInState createState() => _SignInState();
 }
@@ -197,7 +196,7 @@ class _SignInState extends State<SignIn> {
               ]),
           child: TextFormField(
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => node.unfocus(),
+              onFieldSubmitted: (_) => logIn(),
               keyboardType: TextInputType.text,
               obscureText: true,
               style: TextStyle(color: Colors.white),
@@ -235,7 +234,7 @@ class _SignInState extends State<SignIn> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ForgotPW()),
+              SlidingPageChange(page: ForgotPW()),
             );
             print('Forgot pw Button Pressed');
           },
@@ -269,23 +268,23 @@ class _SignInState extends State<SignIn> {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'OpenSans'),
             ),
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                dynamic result =
-                    await _auth.signInMail(email.trim(), password.trim());
-                print('Result is' + result);
-                if (result == null) {
-                  print('Result was null');
-                  setState(() => error = 'Indtast korrekt mail eller kode');
-                }
-                print('Email is:' + email);
-                print('Password is' + password);
-              } else {
-                setState(() => error = 'Indtast korrekt mail eller kode');
-              }
+            onPressed: () {
+              logIn();
             }),
       ),
     );
+  }
+
+  logIn() async {
+    if (_formKey.currentState.validate()) {
+      dynamic result =
+          await _auth.signInMail(email.trim(), password.trim());
+      if (result == null) {
+        setState(() => error = 'Indtast korrekt mail eller kode');
+      }
+    } else {
+      setState(() => error = 'Indtast korrekt mail eller kode');
+    }
   }
 
   Widget _buildRegisterButton() {
@@ -304,7 +303,7 @@ class _SignInState extends State<SignIn> {
             style: linkStyle,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                widget.togglePage();
+                Navigator.push(context, SlidingPageChange(page: Register()));
                 print('Clicked Register');
               },
           )

@@ -11,23 +11,12 @@ class AuthenticationHandler extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<AuthenticationHandler> {
-  bool showSignIn = true;
-
-  void togglePage() {
-    setState(() {
-      showSignIn = !showSignIn;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LocalUser>(context);
     if (user == null) {
-      if (showSignIn) {
-        return SignIn(togglePage: togglePage);
-      } else {
-        return Register(togglePage: togglePage);
-      }
+      return SignIn();
     }
 
     return BottomNavigator();

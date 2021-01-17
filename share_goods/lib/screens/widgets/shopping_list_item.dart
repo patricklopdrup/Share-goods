@@ -18,9 +18,13 @@ class ItemListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (item.shouldBuy) {
-      return isAdmin ? _adminMenu(context, _buildNeedCard(context)) : _buildNeedCard(context);
+      return isAdmin
+          ? _adminMenu(context, _buildNeedCard(context))
+          : _buildNeedCard(context);
     } else {
-      return isAdmin ? _adminMenu(context, _buildInventoryCard(context)) : _buildInventoryCard(context);
+      return isAdmin
+          ? _adminMenu(context, _buildInventoryCard(context))
+          : _buildInventoryCard(context);
     }
   }
 
@@ -160,52 +164,6 @@ class ItemListItemWidget extends StatelessWidget {
     );
   }
 
-  /// Wrap a Card with an adminMenu given access to edit and delete item
-  /// [card] is the card to be wrapped
-  Widget _adminMenu(BuildContext context, Card card) {
-    return FocusedMenuHolder(
-      menuItems: [
-        FocusedMenuItem(
-          title: Text('Rediger'),
-          trailingIcon: Icon(Icons.edit),
-          onPressed: () {
-            editAlertdialog(context, item).then((value) {
-              // Function returns null if dismissed. Need to check
-              if (value != null) {
-                Future.delayed(Duration(milliseconds: 350), () {
-                  item.reference.update({'name': value});
-                });
-              }
-            });
-          },
-        ),
-        FocusedMenuItem(
-            title: Text('Slet', style: TextStyle(color: Colors.redAccent),),
-            trailingIcon: Icon(Icons.delete, color: Colors.redAccent,),
-            onPressed: () {
-              // Delete item if OK button is pressed / if true is returned
-              Future.delayed(Duration(milliseconds: 200), () {
-                deleteDialog(context, item).then((value) {
-                  // Function returns null if dismissed. Need to check
-                  if (value != null && value) {
-                    Future.delayed(Duration(milliseconds: 350), () {
-                      item.reference.delete();
-                    });
-                  }
-                });
-              });
-            }),
-      ],
-      menuWidth: MediaQuery.of(context).size.width * 0.50,
-      animateMenuItems: true,
-      duration: Duration(milliseconds: 100),
-      openWithTap: true,
-      blurSize: 3,
-      onPressed: () {},
-      child: card
-    );
-  }
-
   /// Build the container with the item name within it
   Widget _buildInventoryItemBanner(BuildContext context) {
     return Expanded(
@@ -279,5 +237,56 @@ class ItemListItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Wrap a Card with an adminMenu given access to edit and delete item
+  /// [card] is the card to be wrapped
+  Widget _adminMenu(BuildContext context, Card card) {
+    return FocusedMenuHolder(
+        menuItems: [
+          FocusedMenuItem(
+            title: Text('Rediger'),
+            trailingIcon: Icon(Icons.edit),
+            onPressed: () {
+              buildEditItemDialog(context, item).then((value) {
+                // Function returns null if dismissed. Need to check
+                if (value != null) {
+                  Future.delayed(Duration(milliseconds: 350), () {
+                    item.reference.update({'name': value});
+                  });
+                }
+              });
+            },
+          ),
+          FocusedMenuItem(
+              title: Text(
+                'Slet',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              trailingIcon: Icon(
+                Icons.delete,
+                color: Colors.redAccent,
+              ),
+              onPressed: () {
+                // Delete item if OK button is pressed / if true is returned
+                Future.delayed(Duration(milliseconds: 200), () {
+                  buildDeleteItemDialog(context, item).then((value) {
+                    // Function returns null if dismissed. Need to check
+                    if (value != null && value) {
+                      Future.delayed(Duration(milliseconds: 350), () {
+                        item.reference.delete();
+                      });
+                    }
+                  });
+                });
+              }),
+        ],
+        menuWidth: MediaQuery.of(context).size.width * 0.50,
+        animateMenuItems: true,
+        duration: Duration(milliseconds: 100),
+        openWithTap: false,
+        blurSize: 3,
+        onPressed: () {},
+        child: card);
   }
 }

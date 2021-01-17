@@ -25,7 +25,7 @@ class Kitchen {
             batch.set(docRef, doc);
           }),
           batch.commit(),
-          dbref.collection('Users').doc(admin.id).collection('kitchens').add({'kitchen': ref, 'name': name})
+          dbref.collection('Users').doc(admin.id).collection('kitchens').doc(ref.id).set({'kitchen': ref, 'name': name})
         },
       );
     } else {

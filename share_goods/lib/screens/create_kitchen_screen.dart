@@ -76,8 +76,6 @@ class _CreateKitchenState extends State<CreateKitchen> {
             createConfirmDialog(context, _myController, _defaultItems, auth).then((kitchen) {
               // If cancel is pressed just close the dialog otherwise go to MyHomePage
               if (kitchen != null) {
-                print("HEEEEJ HEEEEEEEJ" + kitchen.name);
-                print("HEEEEJ HEEEEEEEJ" + kitchen.name);
                 kitchen.save();
                 Navigator.of(context).pop();
                 widget.selectTabFunc('Kitchen', 1);

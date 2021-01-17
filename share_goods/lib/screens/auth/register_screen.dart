@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:share_goods/bottom_navigator.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:share_goods/utils/Colors.dart';
 
 class Register extends StatefulWidget {
   final Function togglePage;
+
   Register({this.togglePage});
 
   @override
@@ -21,135 +23,127 @@ class _RegisterState extends State<Register> {
 
   // instance of AuthService class auth from services/auth.dart
   final AuthService _auth = AuthService();
+
   //
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      // To override the android backbutton
-      onWillPop: _onBackPressed,
-      child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.1, 0.6, 0.9],
-              colors: [
-                myGradientGreen0,
-                myGradientGreen1,
-                myGradientGreen2,
-              ],
-            ),
+    return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.6, 0.9],
+            colors: [
+              myGradientGreen0,
+              myGradientGreen1,
+              myGradientGreen2,
+            ],
           ),
-          child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                  checkS = false;
-                  error = '';
-                },
-                child: Stack(children: <Widget>[
-                  Container(
-                    height: double.infinity,
-                    child: SingleChildScrollView(
-                      physics: checkS
-                          ? const AlwaysScrollableScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 40.0,
-                        vertical: 100.0,
-                      ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Tilmeld dig',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            Text(
-                              'ShareGoods',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 30.0),
-                            _buildUsernameTextField(),
-                            SizedBox(height: 30.0),
-                            _buildEmailTextField(),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            _buildPasswordTextField(),
-                            SizedBox(height: 5.0),
-                            Text(
-                              error,
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 12,
-                                  fontFamily: 'OpenSans'),
-                            ),
-                            _buildRegisterButton(),
-                          ],
-                        ),
-                      ),
+        ),
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                checkS = false;
+                error = '';
+              },
+              child: Stack(children: <Widget>[
+                Container(
+                  height: double.infinity,
+                  child: SingleChildScrollView(
+                    physics: checkS
+                        ? const AlwaysScrollableScrollPhysics()
+                        : const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 40.0,
+                      vertical: 100.0,
                     ),
-                  ),
-                  Positioned(
-                    top: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: AppBar(
-                      title: Align(
-                        alignment: Alignment(-1.25, 0),
-                        child: InkWell(
-                          onTap: () {
-                            print('Pressed back');
-                            widget.togglePage();
-                          },
-                          child: Text(
-                            'Log ind',
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Tilmeld dig',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'OpenSans',
                                 fontSize: 20.0,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          Text(
+                            'ShareGoods',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'OpenSans',
+                                fontSize: 30.0,
                                 fontWeight: FontWeight.bold),
                           ),
-                        ), // You can add title here
+                          SizedBox(height: 30.0),
+                          _buildUsernameTextField(),
+                          SizedBox(height: 30.0),
+                          _buildEmailTextField(),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          _buildPasswordTextField(),
+                          SizedBox(height: 5.0),
+                          Text(
+                            error,
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontFamily: 'OpenSans'),
+                          ),
+                          _buildRegisterButton(),
+                        ],
                       ),
-                      leading: new IconButton(
-                        icon: new Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                        onPressed: () {
-                          widget.togglePage();
-                        },
-                      ),
-                      backgroundColor: myGradientGreen2
-                          .withOpacity(0.4), //You can make this transparent
-                      elevation: 0.0, //No shadow
                     ),
                   ),
-                ]),
-              ))),
-    );
+                ),
+                Positioned(
+                  top: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: AppBar(
+                    title: Align(
+                      alignment: Alignment(-1.25, 0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Log ind',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ), // You can add title here
+                    ),
+                    leading: new IconButton(
+                      icon: new Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                        size: 20.0,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    backgroundColor: myGradientGreen2
+                        .withOpacity(0.4), //You can make this transparent
+                    elevation: 0.0, //No shadow
+                  ),
+                ),
+              ]),
+            )));
   }
 
-  // Function to override the android backbutton
-  Future<bool> _onBackPressed() {
-    return widget.togglePage();
-  }
 
   Widget _buildUsernameTextField() {
     final node = FocusScope.of(context);
@@ -246,15 +240,16 @@ class _RegisterState extends State<Register> {
                   ),
                   hintText: 'Indtast mail',
                   hintStyle:
-                      TextStyle(color: Colors.white, fontFamily: 'OpenSans')),
+                  TextStyle(color: Colors.white, fontFamily: 'OpenSans')),
               onTap: () {
                 checkS = true;
               },
               validator: (val) =>
-                  !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(val)
-                      ? ''
-                      : null,
+              !RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(val)
+                  ? ''
+                  : null,
               onChanged: (val) {
                 setState(() {
                   email = val;
@@ -291,7 +286,7 @@ class _RegisterState extends State<Register> {
               ]),
           child: TextFormField(
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => node.unfocus(),
+              onFieldSubmitted: (_) => registerUser(),
               keyboardType: TextInputType.text,
               obscureText: true,
               style: TextStyle(color: Colors.white),
@@ -305,7 +300,7 @@ class _RegisterState extends State<Register> {
                   ),
                   hintText: 'Indtast kodeord',
                   hintStyle:
-                      TextStyle(color: Colors.white, fontFamily: 'OpenSans')),
+                  TextStyle(color: Colors.white, fontFamily: 'OpenSans')),
               onTap: () {
                 checkS = true;
               },
@@ -326,7 +321,7 @@ class _RegisterState extends State<Register> {
       child: ButtonTheme(
         minWidth: double.maxFinite,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         child: RaisedButton(
             color: Colors.white,
             elevation: 5.0,
@@ -362,6 +357,8 @@ class _RegisterState extends State<Register> {
         print('Result is ' + result.uid);
         if (result == null) {
           print('Result was null');
+        } else {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BottomNavigator()), (route) => false);
         }
       } catch (e) {
         switch (e) {

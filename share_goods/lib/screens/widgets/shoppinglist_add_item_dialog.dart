@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_goods/utils/Colors.dart';
 
-Future<Map<String, Object>> createAlertDialog(BuildContext context, bool shouldBuy) {
+Future<Map<String, Object>> buildAddItemDialog(BuildContext context, bool shouldBuy) {
   TextEditingController myController = TextEditingController();
   return showDialog(
       context: context,
