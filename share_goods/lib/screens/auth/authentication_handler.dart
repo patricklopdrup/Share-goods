@@ -23,11 +23,7 @@ class _AuthenticateState extends State<AuthenticationHandler> {
   Widget build(BuildContext context) {
     final user = Provider.of<LocalUser>(context);
     if (user == null) {
-      if (showSignIn) {
-        return SignIn(togglePage: togglePage);
-      } else {
-        return Register(togglePage: togglePage);
-      }
+      return SignIn(togglePage: togglePage);
     }
 
     return BottomNavigator();

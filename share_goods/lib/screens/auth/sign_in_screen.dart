@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:share_goods/screens/auth/forgot_password_screen.dart';
+import 'package:share_goods/screens/auth/register_screen.dart';
 import 'package:share_goods/services/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:share_goods/utils/Colors.dart';
+import 'package:share_goods/widgets/route_slide_animation.dart';
 
 class SignIn extends StatefulWidget {
   final Function togglePage;
@@ -235,7 +237,7 @@ class _SignInState extends State<SignIn> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ForgotPW()),
+              SlidingPageChange(page: ForgotPW()),
             );
             print('Forgot pw Button Pressed');
           },
@@ -304,7 +306,7 @@ class _SignInState extends State<SignIn> {
             style: linkStyle,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                widget.togglePage();
+                Navigator.push(context, SlidingPageChange(page: Register()));
                 print('Clicked Register');
               },
           )
