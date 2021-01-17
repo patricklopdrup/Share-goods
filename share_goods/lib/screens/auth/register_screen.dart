@@ -291,7 +291,7 @@ class _RegisterState extends State<Register> {
               ]),
           child: TextFormField(
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) => node.unfocus(),
+              onFieldSubmitted: (_) => registerUser(),
               keyboardType: TextInputType.text,
               obscureText: true,
               style: TextStyle(color: Colors.white),
