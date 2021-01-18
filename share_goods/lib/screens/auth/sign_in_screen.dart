@@ -22,8 +22,8 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
 
   // text field variables
-  String email = '';
-  String password = '';
+  String email = 'hej@hej.dk';
+  String password = 'hejmeddig';
   String error = '';
   bool checkS = false;
 
@@ -138,6 +138,7 @@ class _SignInState extends State<SignIn> {
                 )
               ]),
           child: TextFormField(
+            initialValue: 'hej@hej.dk',
               textInputAction: TextInputAction.next,
               onEditingComplete: () => node.nextFocus(),
               keyboardType: TextInputType.emailAddress,
@@ -196,6 +197,7 @@ class _SignInState extends State<SignIn> {
                 )
               ]),
           child: TextFormField(
+              initialValue: 'hejmeddig',
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => logIn(),
               keyboardType: TextInputType.text,
@@ -395,9 +397,11 @@ class _SignInState extends State<SignIn> {
                               text: 'Sendt mail til "',
                               children: [
                                 TextSpan(text: myController.text.toString()),
-                                TextSpan(text: '" med link til at nulstille kode!')
+                                TextSpan(
+                                    text: '" med link til at nulstille kode!')
                               ],
-                              style: TextStyle(color: Colors.black, fontSize: 20),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
                             ),
                           ),
                   ],
@@ -421,7 +425,8 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(color: myGradientGreen2),
                     ),
                     onPressed: () {
-                      if (!mailSent && myController.text.toString().length > 0) {
+                      if (!mailSent &&
+                          myController.text.toString().length > 0) {
                         auth
                             .sendPasswordResetEmail(
                               email: myController.text.toString(),
