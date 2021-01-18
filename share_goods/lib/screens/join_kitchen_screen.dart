@@ -127,7 +127,7 @@ class _JoinKitchenState extends State<JoinKitchen> {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "Vil du joine",
+                          text: "Vil du tilmelde",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 30,
@@ -153,28 +153,26 @@ class _JoinKitchenState extends State<JoinKitchen> {
                             style: TextStyle(
                                 fontSize: 23, fontWeight: FontWeight.bold)),
                       ),
+                      SizedBox(height: 40,),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 100,
+                          child: RaisedButton(
+                            onPressed: () {
+                              addUserKitchen();
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("OK"),
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ],
-          ),
-        ),
-        Positioned(
-          bottom: 0.0,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: 100,
-              child: RaisedButton(
-                onPressed: () {
-                  addUserKitchen();
-                  Navigator.of(context).pop();
-                },
-                child: Text("OK"),
-                color: Colors.green,
-              ),
-            ),
           ),
         ),
         Positioned(
