@@ -79,29 +79,32 @@ class _KitchenOverviewState extends State<KitchenOverview> {
   /// Wrap a Card with an adminMenu given access to edit and delete item
   /// [card] is the card to be wrapped
   Widget _adminMenu(BuildContext context, KitchenCard card) {
-    return FocusedMenuHolder(
-      menuItems: [
-        FocusedMenuItem(
-          title: Text(
-            'Forlad køkken',
-            style: TextStyle(color: Colors.redAccent),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+      child: FocusedMenuHolder(
+        menuItems: [
+          FocusedMenuItem(
+            title: Text(
+              'Forlad køkken',
+              style: TextStyle(color: Colors.redAccent),
+            ),
+            trailingIcon: Icon(
+              Icons.exit_to_app_rounded,
+              color: Colors.redAccent,
+            ),
+            onPressed: () {
+              _leaveKitchen(card);
+            },
           ),
-          trailingIcon: Icon(
-            Icons.exit_to_app_rounded,
-            color: Colors.redAccent,
-          ),
-          onPressed: () {
-            _leaveKitchen(card);
-          },
-        ),
-      ],
-      menuWidth: MediaQuery.of(context).size.width * 0.60,
-      animateMenuItems: true,
-      duration: Duration(milliseconds: 100),
-      openWithTap: false,
-      blurSize: 3,
-      onPressed: () {},
-      child: card,
+        ],
+        menuWidth: MediaQuery.of(context).size.width * 0.60,
+        animateMenuItems: true,
+        duration: Duration(milliseconds: 100),
+        openWithTap: false,
+        blurSize: 3,
+        onPressed: () {},
+        child: Container(transform: Matrix4.translationValues(-5, 0, 0.0), child: card),
+      ),
     );
   }
 
